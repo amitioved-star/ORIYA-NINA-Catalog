@@ -7,7 +7,6 @@ export default function HomePage({ onItemClick }) {
   const [featured, setFeatured] = useState([])
   const [loading, setLoading] = useState(true)
 
-  // 🎬 סרטונים
   const videos = ['/hero1.mp4', '/hero2.mp4', '/hero3.mp4']
   const [currentVideo, setCurrentVideo] = useState(0)
 
@@ -23,12 +22,11 @@ export default function HomePage({ onItemClick }) {
   }
 
   return (
-    <div className="bg-[#fbf7ef] text-stone-900">
+    <div className="bg-[#fffaf5] text-stone-900">
 
-      {/* 🔥 HERO יוקרתי */}
+      {/* HERO */}
       <section className="relative h-screen overflow-hidden">
 
-        {/* 🎬 וידאו */}
         <video
           key={currentVideo}
           autoPlay
@@ -40,55 +38,56 @@ export default function HomePage({ onItemClick }) {
           <source src={videos[currentVideo]} type="video/mp4" />
         </video>
 
-        {/* שכבת כהות */}
         <div className="absolute inset-0 bg-black/50" />
 
-        {/* 🔝 לוגו למעלה */}
-		<div className="absolute top-10 w-full text-center z-10">
-		  <h1 className="font-display text-white text-3xl md:text-4xl tracking-[0.3em]">
-			ORIYA NINA
-		  </h1>
+        {/* לוגו */}
+        <div className="absolute top-10 w-full text-center z-10">
+          <h1 className="font-display text-white text-3xl md:text-4xl tracking-[0.35em]">
+            ORIYA NINA
+          </h1>
 
-		  {/* ✨ שורת אנגלית מתחת */}
-		  <p className="text-gold-300 text-sm tracking-[0.4em] mt-2 uppercase">
-			LUXURY EVENING DRESSES
-		  </p>
-		</div>
+          <p className="text-gold-300 text-sm tracking-[0.5em] mt-2 uppercase">
+            LUXURY EVENING DRESSES
+          </p>
+        </div>
 
-        {/* 🎯 תוכן מרכזי */}
-        <div className="relative z-10 h-full flex flex-col justify-end pb-24 items-center text-center px-6 text-white">
+        {/* תוכן */}
+        <div className="relative z-10 h-full flex flex-col justify-end pb-28 items-center text-center px-6 text-white">
 
-          <p className="text-lg text-stone-200 max-w-xl mb-10">
+          <p className="text-lg text-stone-200 max-w-xl mb-10 leading-relaxed">
             סטודיו להשכרת שמלות ערב צנועות ויוקרתיות בהתאמה אישית לכל אירוע
           </p>
 
-          <div className="flex gap-4">
+          <div className="flex gap-4 flex-wrap justify-center">
+
+            {/* כפתור זהב */}
             <Link
               to="/catalog"
-              className="bg-gold-500 hover:bg-gold-600 px-8 py-3 rounded-full font-semibold"
+              className="bg-gold-500 hover:bg-gold-600 text-white px-8 py-3 rounded-full font-semibold transition"
             >
               לצפייה בקטלוג
             </Link>
 
+            {/* כפתור outline יוקרתי */}
             <a
               href="https://wa.me/972506386895"
-              className="border border-white px-8 py-3 rounded-full hover:bg-white hover:text-black transition"
+              className="border border-white/80 px-8 py-3 rounded-full hover:bg-white hover:text-black transition"
             >
               קביעת מדידה
             </a>
+
           </div>
         </div>
 
-        {/* תחתית */}
         <div className="absolute bottom-10 w-full text-center text-white/70 text-sm tracking-widest">
-          XS — XXL | השכרה החל מ־300₪
+          XS — XXL | החל מ־300₪
         </div>
 
       </section>
 
-      {/* 💎 מחירים */}
+      {/* מחירים */}
       <section className="py-20 px-4 text-center max-w-4xl mx-auto">
-        <h2 className="text-4xl font-bold mb-8">✨ פרטים חשובים ✨</h2>
+        <h2 className="text-4xl font-bold mb-8 text-gold-500">פרטים חשובים</h2>
 
         <div className="bg-white rounded-3xl shadow-xl p-8 space-y-4 text-lg">
 
@@ -104,7 +103,7 @@ export default function HomePage({ onItemClick }) {
             מתאים לכל אירוע | שבתות חתן | מידות XS–XXL
           </p>
 
-          <p className="text-green-600 font-bold text-xl">
+          <p className="text-gold-500 font-bold text-xl">
             חדש!!! השכרת שמלות בת מצווה – 200 ₪ בלבד
           </p>
 
@@ -116,17 +115,17 @@ export default function HomePage({ onItemClick }) {
         <div className="mt-8">
           <a
             href="https://wa.me/972506386895"
-            className="bg-green-500 hover:bg-green-600 text-white px-10 py-4 rounded-full text-lg font-semibold"
+            className="bg-gold-500 hover:bg-gold-600 text-white px-10 py-4 rounded-full text-lg font-semibold transition"
           >
             קביעת מדידה אישית
           </a>
         </div>
       </section>
 
-      {/* 👗 שמלות */}
+      {/* שמלות */}
       <section className="py-20 px-4 max-w-7xl mx-auto">
         <div className="text-center mb-12">
-          <p className="text-gold-600 font-medium mb-2">הכי נצפות</p>
+          <p className="text-gold-500 font-medium mb-2">הכי נצפות</p>
           <h2 className="text-4xl font-bold">שמלות נבחרות</h2>
         </div>
 
@@ -143,14 +142,14 @@ export default function HomePage({ onItemClick }) {
         )}
 
         <div className="text-center mt-12">
-          <Link to="/catalog" className="btn-outline px-8 py-3">
+          <Link to="/catalog" className="border border-gold-500 text-gold-500 px-8 py-3 rounded-full hover:bg-gold-500 hover:text-white transition">
             לכל הקטלוג
           </Link>
         </div>
       </section>
 
-      {/* 🧭 איך זה עובד */}
-      <section className="py-20 px-4 bg-stone-900 text-white">
+      {/* איך זה עובד */}
+      <section className="py-20 px-4 bg-[#1c1c1c] text-white">
         <div className="max-w-5xl mx-auto text-center">
           <h2 className="text-4xl font-bold mb-12">איך זה עובד?</h2>
 
@@ -173,7 +172,7 @@ export default function HomePage({ onItemClick }) {
       </section>
 
       {/* CTA */}
-      <section className="py-20 px-4 text-center bg-[#f8ead2]">
+      <section className="py-20 px-4 text-center bg-rose-blush">
         <h2 className="text-4xl font-bold mb-4">
           מוכנה למצוא את השמלה המושלמת?
         </h2>
@@ -182,7 +181,7 @@ export default function HomePage({ onItemClick }) {
           הקטלוג פתוח לצפייה — ללא רכישה באתר
         </p>
 
-        <Link to="/catalog" className="btn-primary px-10 py-4">
+        <Link to="/catalog" className="bg-gold-500 text-white px-10 py-4 rounded-full hover:bg-gold-600 transition">
           לקולקציה המלאה
         </Link>
       </section>
