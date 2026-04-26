@@ -58,16 +58,6 @@ export default function HomePage({ onItemClick }) {
         {/* 🎯 תוכן מרכזי */}
         <div className="relative z-10 h-full flex flex-col justify-center items-center text-center px-6 text-white">
 
-          <p className="text-gold-300 tracking-[0.4em] text-sm mb-4 uppercase">
-            Luxury Evening Dresses
-          </p>
-
-          <h2 className="text-4xl md:text-6xl font-display leading-tight mb-6">
-            אלגנטיות צנועה
-            <br />
-            ברמה אחרת
-          </h2>
-
           <p className="text-lg text-stone-200 max-w-xl mb-10">
             סטודיו להשכרת שמלות ערב יוקרתיות בהתאמה אישית לכל אירוע
           </p>
