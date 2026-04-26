@@ -103,7 +103,7 @@ export default function HomePage({ onItemClick }) {
             מתאים לכל אירוע | שבתות חתן | מידות XS–XXL
           </p>
 
-          <p className="text-gold-500 font-bold text-xl">
+          <p className="text-gold-600 font-bold text-2x1">
             חדש!!! השכרת שמלות בת מצווה – 200 ₪ בלבד
           </p>
 
