@@ -44,11 +44,16 @@ export default function HomePage({ onItemClick }) {
         <div className="absolute inset-0 bg-black/50" />
 
         {/* 🔝 לוגו למעלה */}
-        <div className="absolute top-10 w-full text-center z-10">
-          <h1 className="font-display text-white text-3xl md:text-4xl tracking-[0.3em]">
-            ORIYA NINA
-          </h1>
-        </div>
+		<div className="absolute top-10 w-full text-center z-10">
+		  <h1 className="font-display text-white text-3xl md:text-4xl tracking-[0.3em]">
+			ORIYA NINA
+		  </h1>
+
+		  {/* ✨ שורת אנגלית מתחת */}
+		  <p className="text-gold-300 text-sm tracking-[0.4em] mt-2 uppercase">
+			LUXURY EVENING DRESSES
+		  </p>
+		</div>
 
         {/* 🎯 תוכן מרכזי */}
         <div className="relative z-10 h-full flex flex-col justify-center items-center text-center px-6 text-white">
