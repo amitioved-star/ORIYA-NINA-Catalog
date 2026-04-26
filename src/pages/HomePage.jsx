@@ -7,6 +7,10 @@ export default function HomePage({ onItemClick }) {
   const [featured, setFeatured] = useState([])
   const [loading, setLoading] = useState(true)
 
+  // 🎬 רשימת סרטונים
+  const videos = ['/hero1.mp4', '/hero2.mp4', '/hero3.mp4']
+  const [currentVideo, setCurrentVideo] = useState(0)
+
   useEffect(() => {
     fetchItems()
       .then(data => setFeatured((data || []).slice(0, 8)))
@@ -14,25 +18,30 @@ export default function HomePage({ onItemClick }) {
       .finally(() => setLoading(false))
   }, [])
 
+  // מעבר בין סרטונים
+  const handleVideoEnd = () => {
+    setCurrentVideo((prev) => (prev + 1) % videos.length)
+  }
+
   return (
     <div className="bg-[#fbf7ef] text-stone-900">
 
-      {/* 🔥 HERO עם וידאו */}
+      {/* 🔥 HERO עם 3 סרטונים */}
       <section className="relative h-screen flex items-center justify-center text-center overflow-hidden">
 
-        {/* וידאו */}
-        <video autoPlay muted loop className="absolute w-full h-full object-cover">
-          <source src="/hero.mp4" type="video/mp4" />
+        <video
+          key={currentVideo}
+          autoPlay
+          muted
+          playsInline
+          onEnded={handleVideoEnd}
+          className="absolute w-full h-full object-cover"
+        >
+          <source src={videos[currentVideo]} type="video/mp4" />
         </video>
 
-        {/* fallback תמונה */}
-        <div
-          className="absolute w-full h-full bg-cover bg-center"
-          style={{ backgroundImage: "url('/hero.jpg')" }}
-        />
-
-        {/* שכבת כהות */}
-        <div className="absolute inset-0 bg-black/60" />
+        {/* שכבת כהות יוקרתית */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/60 to-black/80" />
 
         {/* תוכן */}
         <div className="relative z-10 max-w-3xl px-4 text-white">
