@@ -56,10 +56,7 @@ export default function HomePage({ onItemClick }) {
 		</div>
 
         {/* 🎯 תוכן מרכזי */}
-        <div className="relative z-10 h-full flex flex-col justify-start pt-[35vh] items-center text-center px-6 text-white">
-
-
-
+        <div className="relative z-10 h-full flex flex-col justify-end pb-24 items-center text-center px-6 text-white">
 
           <p className="text-lg text-stone-200 max-w-xl mb-10">
             סטודיו להשכרת שמלות ערב יוקרתיות בהתאמה אישית לכל אירוע
