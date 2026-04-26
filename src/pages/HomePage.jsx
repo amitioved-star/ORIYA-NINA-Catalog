@@ -7,7 +7,7 @@ export default function HomePage({ onItemClick }) {
   const [featured, setFeatured] = useState([])
   const [loading, setLoading] = useState(true)
 
-  // 🎬 רשימת סרטונים
+  // 🎬 סרטונים
   const videos = ['/hero1.mp4', '/hero2.mp4', '/hero3.mp4']
   const [currentVideo, setCurrentVideo] = useState(0)
 
@@ -18,7 +18,6 @@ export default function HomePage({ onItemClick }) {
       .finally(() => setLoading(false))
   }, [])
 
-  // מעבר בין סרטונים
   const handleVideoEnd = () => {
     setCurrentVideo((prev) => (prev + 1) % videos.length)
   }
@@ -26,9 +25,10 @@ export default function HomePage({ onItemClick }) {
   return (
     <div className="bg-[#fbf7ef] text-stone-900">
 
-      {/* 🔥 HERO עם 3 סרטונים */}
-      <section className="relative h-screen flex items-center justify-center text-center overflow-hidden">
+      {/* 🔥 HERO יוקרתי */}
+      <section className="relative h-screen overflow-hidden">
 
+        {/* 🎬 וידאו */}
         <video
           key={currentVideo}
           autoPlay
@@ -40,40 +40,58 @@ export default function HomePage({ onItemClick }) {
           <source src={videos[currentVideo]} type="video/mp4" />
         </video>
 
-        {/* שכבת כהות יוקרתית */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/60 to-black/80" />
+        {/* שכבת כהות */}
+        <div className="absolute inset-0 bg-black/50" />
 
-        {/* תוכן */}
-        <div className="relative z-10 max-w-3xl px-4 text-white">
-
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 tracking-tight">
+        {/* 🔝 לוגו למעלה */}
+        <div className="absolute top-10 w-full text-center z-10">
+          <h1 className="font-display text-white text-3xl md:text-4xl tracking-[0.3em]">
             ORIYA NINA
           </h1>
+        </div>
 
-          <p className="text-xl md:text-2xl mb-4">
-            סטודיו להשכרת שמלות ערב צנועות ויוקרתיות
+        {/* 🎯 תוכן מרכזי */}
+        <div className="relative z-10 h-full flex flex-col justify-center items-center text-center px-6 text-white">
+
+          <p className="text-gold-300 tracking-[0.4em] text-sm mb-4 uppercase">
+            Luxury Evening Dresses
           </p>
 
-          <p className="text-lg text-stone-200 mb-8">
-            מצאי את השמלה המושלמת מתוך קטלוג יוקרתי ומוקפד
+          <h2 className="text-4xl md:text-6xl font-display leading-tight mb-6">
+            אלגנטיות צנועה
+            <br />
+            ברמה אחרת
+          </h2>
+
+          <p className="text-lg text-stone-200 max-w-xl mb-10">
+            סטודיו להשכרת שמלות ערב יוקרתיות בהתאמה אישית לכל אירוע
           </p>
 
-          <div className="flex flex-wrap justify-center gap-4">
-            <Link to="/catalog" className="bg-gold-500 hover:bg-gold-600 px-8 py-3 rounded-full font-semibold">
-              גלי את הקולקציה
+          <div className="flex gap-4">
+            <Link
+              to="/catalog"
+              className="bg-gold-500 hover:bg-gold-600 px-8 py-3 rounded-full font-semibold"
+            >
+              לצפייה בקטלוג
             </Link>
 
             <a
               href="https://wa.me/972506386895"
-              className="bg-green-500 hover:bg-green-600 px-8 py-3 rounded-full font-semibold"
+              className="border border-white px-8 py-3 rounded-full hover:bg-white hover:text-black transition"
             >
-              צרי קשר
+              קביעת מדידה
             </a>
           </div>
         </div>
+
+        {/* תחתית */}
+        <div className="absolute bottom-10 w-full text-center text-white/70 text-sm tracking-widest">
+          XS — XXL | השכרה החל מ־300₪
+        </div>
+
       </section>
 
-      {/* 💎 מידע מחירים */}
+      {/* 💎 מחירים */}
       <section className="py-20 px-4 text-center max-w-4xl mx-auto">
         <h2 className="text-4xl font-bold mb-8">✨ פרטים חשובים ✨</h2>
 
@@ -110,7 +128,7 @@ export default function HomePage({ onItemClick }) {
         </div>
       </section>
 
-      {/* 👗 שמלות נבחרות */}
+      {/* 👗 שמלות */}
       <section className="py-20 px-4 max-w-7xl mx-auto">
         <div className="text-center mb-12">
           <p className="text-gold-600 font-medium mb-2">הכי נצפות</p>
