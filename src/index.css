@@ -1,0 +1,159 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    direction: rtl;
+  }
+  
+  body {
+    font-family: 'Assistant', sans-serif;
+    background-color: #FDFAF5;
+    color: #3a3028;
+    text-align: right;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Assistant', sans-serif;
+    font-weight: 600;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-gold-500 text-white px-6 py-3 rounded-full font-medium transition-all duration-300 hover:bg-gold-600 hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0;
+  }
+  
+  .btn-outline {
+    @apply border border-gold-400 text-gold-600 px-6 py-3 rounded-full font-medium transition-all duration-300 hover:bg-gold-400 hover:text-white hover:shadow-md;
+  }
+
+  .btn-whatsapp {
+    @apply bg-green-500 text-white px-5 py-2.5 rounded-full font-medium transition-all duration-300 hover:bg-green-600 hover:shadow-md flex items-center gap-2 justify-center;
+  }
+
+  .card {
+    @apply bg-white rounded-2xl shadow-sm border border-cream-200 overflow-hidden transition-all duration-300 hover:shadow-md hover:-translate-y-1;
+  }
+
+  .badge-available {
+    @apply bg-green-50 text-green-700 border border-green-200 text-xs px-2.5 py-1 rounded-full font-medium;
+  }
+
+  .badge-reserved {
+    @apply bg-amber-50 text-amber-700 border border-amber-200 text-xs px-2.5 py-1 rounded-full font-medium;
+  }
+
+  .badge-unavailable {
+    @apply bg-red-50 text-red-600 border border-red-200 text-xs px-2.5 py-1 rounded-full font-medium;
+  }
+
+  .badge-new {
+    @apply bg-gold-500 text-white text-xs px-2.5 py-1 rounded-full font-medium;
+  }
+
+  .badge-popular {
+    @apply bg-rose-400 text-white text-xs px-2.5 py-1 rounded-full font-medium;
+  }
+
+  .input-field {
+    @apply w-full border border-cream-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-transparent bg-white text-right transition-all;
+    font-family: 'Assistant', sans-serif;
+  }
+
+  .section-title {
+    @apply text-3xl font-semibold text-stone-800 text-center;
+  }
+
+  .gold-divider {
+    @apply w-16 h-0.5 bg-gold-400 mx-auto my-4;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #FAF5EB;
+}
+::-webkit-scrollbar-thumb {
+  background: #D4AF7A;
+  border-radius: 3px;
+}
+
+/* Modal backdrop */
+.modal-backdrop {
+  animation: fadeIn 0.2s ease-out;
+}
+
+/* Image gallery */
+.gallery-thumb {
+  transition: all 0.2s;
+  cursor: pointer;
+}
+.gallery-thumb:hover, .gallery-thumb.active {
+  border-color: #C9A55A;
+  transform: scale(1.05);
+}
+
+/* Filter button active state */
+.filter-btn.active {
+  background-color: #B8923A;
+  color: white;
+  border-color: #B8923A;
+}
+
+/* Hero ornamental line */
+.ornament::before,
+.ornament::after {
+  content: '◆';
+  color: #D4AF7A;
+  font-size: 10px;
+  margin: 0 8px;
+}
+
+/* Admin sidebar */
+.admin-nav-item.active {
+  background-color: #FAF5EB;
+  border-right: 3px solid #B8923A;
+  color: #B8923A;
+  font-weight: 600;
+}
+
+/* Loading spinner */
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #F5ECD6;
+  border-top-color: #B8923A;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Textarea RTL */
+textarea, input, select {
+  direction: rtl;
+  text-align: right;
+}
+
+/* Image upload area */
+.upload-area {
+  border: 2px dashed #D4AF7A;
+  border-radius: 12px;
+  transition: all 0.2s;
+}
+.upload-area:hover, .upload-area.drag-over {
+  border-color: #B8923A;
+  background-color: #FAF5EB;
+}
