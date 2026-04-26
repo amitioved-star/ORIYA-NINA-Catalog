@@ -56,7 +56,7 @@ export default function HomePage({ onItemClick }) {
 		</div>
 
         {/* 🎯 תוכן מרכזי */}
-        <div className="relative z-10 text-center px-6 pt-[35vh]">
+        <div className="relative z-10 text-center px-6 mt-32 md:mt-40">
 
 
 
