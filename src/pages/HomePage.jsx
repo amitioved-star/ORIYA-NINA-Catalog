@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import ItemCard from '../components/ItemCard'
 import { fetchItems } from '../lib/supabase'
+import { Sparkles, Crown, Gem } from 'lucide-react'
 
 export default function HomePage({ onItemClick }) {
   const [featured, setFeatured] = useState([])
@@ -38,40 +39,38 @@ export default function HomePage({ onItemClick }) {
           <source src={videos[currentVideo]} type="video/mp4" />
         </video>
 
-        <div className="absolute inset-0 bg-black/50" />
+        <div className="absolute inset-0 bg-black/60" />
 
-        {/* לוגו */}
-        <div className="absolute top-10 w-full text-center z-10">
-          <h1 className="font-display text-white text-3xl md:text-4xl tracking-[0.35em]">
+        {/* HEADER */}
+        <div className="absolute top-10 w-full text-center z-10 animate-fade-in">
+          <h1 className="font-display text-white text-4xl md:text-5xl tracking-[0.4em]">
             ORIYA NINA
           </h1>
 
-          <p className="text-gold-300 text-sm tracking-[0.5em] mt-2 uppercase">
+          <p className="text-gold-300 text-sm tracking-[0.6em] mt-3 uppercase">
             LUXURY EVENING DRESSES
           </p>
         </div>
 
-        {/* תוכן */}
-        <div className="relative z-10 h-full flex flex-col justify-end pb-28 items-center text-center px-6 text-white">
+        {/* CONTENT */}
+        <div className="relative z-10 h-full flex flex-col justify-end pb-32 items-center text-center px-6 text-white">
 
-          <p className="text-lg text-stone-200 max-w-xl mb-10 leading-relaxed">
-            סטודיו להשכרת שמלות ערב צנועות ויוקרתיות בהתאמה אישית לכל אירוע
+          <p className="text-lg md:text-xl text-stone-200 max-w-xl mb-10 leading-relaxed animate-slide-up">
+            שמלות ערב צנועות ויוקרתיות בהתאמה אישית לכל אירוע
           </p>
 
           <div className="flex gap-4 flex-wrap justify-center">
 
-            {/* כפתור זהב */}
             <Link
               to="/catalog"
-              className="bg-gold-500 hover:bg-gold-600 text-white px-8 py-3 rounded-full font-semibold transition"
+              className="bg-gold-500 hover:bg-gold-600 text-white px-8 py-3 rounded-full font-semibold transition transform hover:scale-105 shadow-lg"
             >
               לצפייה בקטלוג
             </Link>
 
-            {/* כפתור outline יוקרתי */}
             <a
               href="https://wa.me/972506386895"
-              className="border border-white/80 px-8 py-3 rounded-full hover:bg-white hover:text-black transition"
+              className="border border-white/80 px-8 py-3 rounded-full hover:bg-white hover:text-black transition transform hover:scale-105"
             >
               קביעת מדידה
             </a>
@@ -79,54 +78,67 @@ export default function HomePage({ onItemClick }) {
           </div>
         </div>
 
-        <div className="absolute bottom-10 w-full text-center text-white/70 text-sm tracking-widest">
-          XS — XXL | החל מ־300₪
-        </div>
-
       </section>
 
-      {/* מחירים */}
-      <section className="py-20 px-4 text-center max-w-4xl mx-auto">
-        <h2 className="text-4xl font-bold mb-8 text-gold-500">פרטים חשובים</h2>
+      {/* 💎 פרטים חשובים – יוקרתי */}
+      <section className="py-24 px-6 text-center bg-[#FFF5F2]">
 
-        <div className="bg-white rounded-3xl shadow-xl p-8 space-y-4 text-lg">
+        <h2 className="text-3xl md:text-4xl font-display text-gold-500 mb-14 tracking-wide">
+          פרטים חשובים
+        </h2>
 
-          <p className="text-2xl font-bold text-gold-600">
-            מחיר פתיחה: 300 ₪ בלבד
+        <div className="max-w-4xl mx-auto bg-white rounded-[30px] shadow-2xl p-10 border border-[#f3e5dc] animate-scale-in">
+
+          <div className="flex justify-center gap-6 mb-8 text-gold-500">
+            <Crown size={32} />
+            <Gem size={32} />
+            <Sparkles size={32} />
+          </div>
+
+          <h3 className="text-2xl md:text-3xl font-display mb-6">
+            חוויית השכרה יוקרתית
+          </h3>
+
+          <p className="text-gray-600 mb-6 text-lg leading-relaxed">
+            סטודיו להשכרת שמלות ערב צנועות ואלגנטיות בהתאמה אישית לכל אירוע
           </p>
 
-          <p className="text-stone-600">
-            כולל ניקוי יבש
+          <div className="space-y-3 text-gray-800 text-base">
+
+            <p>
+              <span className="text-gold-500 font-semibold">מחיר פתיחה:</span> 300₪ בלבד (כולל ניקוי יבש)
+            </p>
+
+            <p>מתאים לכל אירוע | שבתות חתן</p>
+
+            <p className="text-gold-500 font-semibold">
+              חדש! שמלות בת מצווה – 200₪ בלבד
+            </p>
+
+          </div>
+
+          <p className="text-sm text-gray-400 mt-6">
+            *המחיר אינו כולל תיקונים
           </p>
 
-          <p>
-            מתאים לכל אירוע | שבתות חתן | מידות XS–XXL
-          </p>
+          <div className="mt-10">
+            <a
+              href="https://wa.me/972506386895"
+              className="bg-gradient-to-r from-[#C9A55A] to-[#E8CFA0] text-white px-10 py-4 rounded-full text-lg font-semibold shadow-lg hover:scale-105 transition"
+            >
+              קביעת מדידה אישית
+            </a>
+          </div>
 
-          <p className="text-gold-600 font-bold text-2x1">
-            חדש!!! השכרת שמלות בת מצווה – 200 ₪ בלבד
-          </p>
-
-          <p className="text-sm text-stone-500">
-            * המחיר לא כולל תיקונים
-          </p>
-        </div>
-
-        <div className="mt-8">
-          <a
-            href="https://wa.me/972506386895"
-            className="bg-gold-500 hover:bg-gold-600 text-white px-10 py-4 rounded-full text-lg font-semibold transition"
-          >
-            קביעת מדידה אישית
-          </a>
         </div>
       </section>
 
       {/* שמלות */}
-      <section className="py-20 px-4 max-w-7xl mx-auto">
-        <div className="text-center mb-12">
-          <p className="text-gold-500 font-medium mb-2">הכי נצפות</p>
-          <h2 className="text-4xl font-bold">שמלות נבחרות</h2>
+      <section className="py-24 px-6 max-w-7xl mx-auto">
+
+        <div className="text-center mb-14">
+          <p className="text-gold-500 mb-2 tracking-widest">BEST PICKS</p>
+          <h2 className="text-4xl font-display">שמלות נבחרות</h2>
         </div>
 
         {loading ? (
@@ -142,48 +154,14 @@ export default function HomePage({ onItemClick }) {
         )}
 
         <div className="text-center mt-12">
-          <Link to="/catalog" className="border border-gold-500 text-gold-500 px-8 py-3 rounded-full hover:bg-gold-500 hover:text-white transition">
+          <Link
+            to="/catalog"
+            className="border border-gold-500 text-gold-500 px-8 py-3 rounded-full hover:bg-gold-500 hover:text-white transition"
+          >
             לכל הקטלוג
           </Link>
         </div>
-      </section>
 
-      {/* איך זה עובד */}
-      <section className="py-20 px-4 bg-[#1c1c1c] text-white">
-        <div className="max-w-5xl mx-auto text-center">
-          <h2 className="text-4xl font-bold mb-12">איך זה עובד?</h2>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              ['1', 'בחרי שמלה', 'עייני בקטלוג ובחרי את הסגנון שלך'],
-              ['2', 'שלחי הודעה', 'לחצי וואטסאפ ושלחי התעניינות'],
-              ['3', 'קבעי מדידה', 'נתאם זמן ונמצא את המידה המושלמת'],
-            ].map(([num, title, desc]) => (
-              <div key={num} className="bg-white/10 rounded-3xl p-8">
-                <div className="w-12 h-12 rounded-full bg-gold-500 mx-auto mb-5 flex items-center justify-center font-bold">
-                  {num}
-                </div>
-                <h3 className="text-2xl font-bold mb-3">{title}</h3>
-                <p className="text-stone-300">{desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="py-20 px-4 text-center bg-rose-blush">
-        <h2 className="text-4xl font-bold mb-4">
-          מוכנה למצוא את השמלה המושלמת?
-        </h2>
-
-        <p className="text-stone-600 mb-8">
-          הקטלוג פתוח לצפייה — ללא רכישה באתר
-        </p>
-
-        <Link to="/catalog" className="bg-gold-500 text-white px-10 py-4 rounded-full hover:bg-gold-600 transition">
-          לקולקציה המלאה
-        </Link>
       </section>
 
     </div>
