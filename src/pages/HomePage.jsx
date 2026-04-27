@@ -43,9 +43,9 @@ export default function HomePage({ onItemClick }) {
 
         {/* HEADER */}
         <div className="absolute top-10 w-full text-center z-10 animate-fade-in">
-          <h1 className="font-display text-red-500 text-6xl">
-            ORIYA NINA
-          </h1>
+        <h1 className="font-display text-red-500 text-6xl">
+		  TEST NEW DESIGN 🔥
+		</h1>
 
           <p className="text-gold-300 text-sm tracking-[0.6em] mt-3 uppercase">
             LUXURY EVENING DRESSES
