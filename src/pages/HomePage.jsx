@@ -35,7 +35,7 @@ export default function HomePage({ onItemClick }) {
           muted
           playsInline
           onEnded={handleVideoEnd}
-          className="absolute w-full h-full object-cover brightness-110 contrast-110 saturate-110 scale-105"
+          className="absolute w-full h-full object-cover brightness-105 contrast-115 saturate-105 scale-105"
         >
           <source src={videos[currentVideo]} type="video/mp4" />
         </video>
