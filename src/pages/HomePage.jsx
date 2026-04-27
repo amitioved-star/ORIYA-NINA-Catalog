@@ -28,39 +28,39 @@ export default function HomePage({ onItemClick }) {
       {/* HERO */}
       <section className="relative h-screen overflow-hidden">
 
-        {/* 🎥 VIDEO */}
+        {/* 🎥 VIDEO משופר */}
         <video
           key={currentVideo}
           autoPlay
           muted
           playsInline
           onEnded={handleVideoEnd}
-          className="absolute w-full h-full object-cover brightness-105 contrast-110 saturate-105 scale-105"
+          className="absolute w-full h-full object-cover brightness-105 contrast-115 saturate-105 scale-105"
         >
           <source src={videos[currentVideo]} type="video/mp4" />
         </video>
 
-        {/* שכבות */}
-        <div className="absolute inset-0 bg-black/25" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/10" />
+        {/* ✨ שכבות יוקרתיות (לא כהה מדי!) */}
+        <div className="absolute inset-0 bg-black/20" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-black/10" />
 
         {/* HEADER */}
-        <div className="absolute top-16 w-full text-center z-10">
+        <div className="absolute top-12 w-full text-center z-10">
 
-          <h1 className="text-3xl sm:text-5xl md:text-6xl font-display tracking-[0.35em] text-white whitespace-nowrap drop-shadow-[0_0_25px_rgba(0,0,0,0.8)]">
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-display tracking-[0.3em] text-white whitespace-nowrap">
             ORIYA NINA
           </h1>
 
-          <p className="text-gold-300 text-xs tracking-[0.6em] mt-4 uppercase drop-shadow-md">
+          <p className="text-gold-300 text-xs tracking-[0.6em] mt-4 uppercase">
             LUXURY EVENING DRESSES
           </p>
 
         </div>
 
         {/* CONTENT */}
-        <div className="relative z-10 h-full flex flex-col justify-end pb-28 items-center text-center px-6 text-white">
+        <div className="relative z-10 h-full flex flex-col justify-end pb-32 items-center text-center px-6 text-white">
 
-          <p className="text-lg md:text-xl max-w-xl mb-10 bg-black/40 px-6 py-3 rounded-xl backdrop-blur-sm">
+          <p className="text-lg md:text-xl text-stone-200 max-w-xl mb-10">
             סטודיו להשכרת שמלות ערב צנועות ויוקרתיות בהתאמה אישית לכל אירוע
           </p>
 
@@ -68,14 +68,14 @@ export default function HomePage({ onItemClick }) {
 
             <Link
               to="/catalog"
-              className="bg-gradient-to-r from-[#C9A55A] to-[#E8CFA0] hover:scale-105 text-white px-8 py-3 rounded-full font-semibold transition shadow-xl"
+              className="bg-gold-500 hover:bg-gold-600 text-white px-8 py-3 rounded-full font-semibold transition"
             >
               לצפייה בקטלוג
             </Link>
 
             <a
               href="https://wa.me/972506386895"
-              className="border border-white px-8 py-3 rounded-full hover:bg-white hover:text-black transition backdrop-blur-sm"
+              className="border border-white px-8 py-3 rounded-full hover:bg-white hover:text-black transition"
             >
               קביעת מדידה
             </a>
@@ -89,11 +89,11 @@ export default function HomePage({ onItemClick }) {
       {/* פרטים חשובים */}
       <section className="py-24 px-6 text-center bg-[#FFF5F2]">
 
-        <h2 className="text-3xl md:text-4xl font-display text-gold-500 mb-14 tracking-wide">
+        <h2 className="text-3xl md:text-4xl font-display text-gold-500 mb-14">
           פרטים חשובים
         </h2>
 
-        <div className="max-w-4xl mx-auto bg-white rounded-[30px] shadow-[0_20px_60px_rgba(0,0,0,0.15)] p-12">
+        <div className="max-w-4xl mx-auto bg-white rounded-[30px] shadow-2xl p-10">
 
           <div className="flex justify-center gap-6 mb-8 text-gold-500">
             <Crown size={32} />
@@ -132,7 +132,7 @@ export default function HomePage({ onItemClick }) {
           <div className="mt-10">
             <a
               href="https://wa.me/972506386895"
-              className="bg-gradient-to-r from-[#C9A55A] to-[#E8CFA0] text-white px-10 py-4 rounded-full text-lg shadow-lg hover:scale-105 transition"
+              className="bg-gradient-to-r from-[#C9A55A] to-[#E8CFA0] text-white px-10 py-4 rounded-full text-lg"
             >
               קביעת מדידה אישית
             </a>
