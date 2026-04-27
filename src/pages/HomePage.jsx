@@ -28,25 +28,30 @@ export default function HomePage({ onItemClick }) {
       {/* HERO */}
       <section className="relative h-screen overflow-hidden">
 
+        {/* 🎥 VIDEO */}
         <video
           key={currentVideo}
           autoPlay
           muted
           playsInline
           onEnded={handleVideoEnd}
-          className="absolute w-full h-full object-cover"
+          className="absolute w-full h-full object-cover brightness-110 contrast-110 saturate-110"
         >
           <source src={videos[currentVideo]} type="video/mp4" />
         </video>
 
-        <div className="absolute inset-0 bg-black/60" />
+        {/* 🌑 שכבת כהות עדינה */}
+        <div className="absolute inset-0 bg-black/20" />
+
+        {/* ✨ שכבת זהב יוקרתית */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/10" />
 
         {/* HEADER */}
         <div className="absolute top-12 w-full text-center z-10">
 
-          <h1 className="text-3xl sm:text-5xl md:text-6xl font-display tracking-[0.3em] text-white whitespace-nowrap">
-		  ORIYA NINA
-		  </h1>
+          <h1 className="text-[22px] sm:text-5xl md:text-6xl font-display tracking-[0.4em] text-white whitespace-nowrap drop-shadow-[0_0_20px_rgba(255,255,255,0.3)]">
+            ORIYA NINA
+          </h1>
 
           <p className="text-gold-300 text-xs tracking-[0.6em] mt-4 uppercase">
             LUXURY EVENING DRESSES
@@ -57,7 +62,7 @@ export default function HomePage({ onItemClick }) {
         {/* CONTENT */}
         <div className="relative z-10 h-full flex flex-col justify-end pb-32 items-center text-center px-6 text-white">
 
-          <p className="text-lg md:text-xl text-stone-200 max-w-xl mb-10">
+          <p className="text-lg md:text-xl text-stone-200 max-w-xl mb-10 backdrop-blur-sm bg-white/10 px-6 py-3 rounded-xl">
             סטודיו להשכרת שמלות ערב צנועות ויוקרתיות בהתאמה אישית לכל אירוע
           </p>
 
@@ -65,14 +70,14 @@ export default function HomePage({ onItemClick }) {
 
             <Link
               to="/catalog"
-              className="bg-gold-500 hover:bg-gold-600 text-white px-8 py-3 rounded-full font-semibold transition"
+              className="bg-gradient-to-r from-[#C9A55A] to-[#E8CFA0] text-white px-8 py-3 rounded-full font-semibold shadow-lg hover:scale-105 transition"
             >
               לצפייה בקטלוג
             </Link>
 
             <a
               href="https://wa.me/972506386895"
-              className="border border-white px-8 py-3 rounded-full hover:bg-white hover:text-black transition"
+              className="border border-white px-8 py-3 rounded-full backdrop-blur-md bg-white/10 hover:bg-white hover:text-black transition"
             >
               קביעת מדידה
             </a>
@@ -90,7 +95,7 @@ export default function HomePage({ onItemClick }) {
           פרטים חשובים
         </h2>
 
-        <div className="max-w-4xl mx-auto bg-white rounded-[30px] shadow-2xl p-10">
+        <div className="max-w-4xl mx-auto bg-white rounded-[30px] shadow-2xl p-10 hover:scale-[1.01] transition">
 
           <div className="flex justify-center gap-6 mb-8 text-gold-500">
             <Crown size={32} />
@@ -129,44 +134,13 @@ export default function HomePage({ onItemClick }) {
           <div className="mt-10">
             <a
               href="https://wa.me/972506386895"
-              className="bg-gradient-to-r from-[#C9A55A] to-[#E8CFA0] text-white px-10 py-4 rounded-full text-lg"
+              className="bg-gradient-to-r from-[#C9A55A] to-[#E8CFA0] text-white px-10 py-4 rounded-full text-lg shadow-lg hover:scale-105 transition"
             >
               קביעת מדידה אישית
             </a>
           </div>
 
         </div>
-      </section>
-
-      {/* שמלות */}
-      <section className="py-24 px-6 max-w-7xl mx-auto">
-
-        <div className="text-center mb-14">
-          <p className="text-gold-500 mb-2 tracking-widest">BEST PICKS</p>
-          <h2 className="text-4xl font-display">שמלות נבחרות</h2>
-        </div>
-
-        {loading ? (
-          <div className="text-center py-16">טוען...</div>
-        ) : featured.length === 0 ? (
-          <div className="text-center text-stone-400 py-16">אין פריטים עדיין</div>
-        ) : (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {featured.map(item => (
-              <ItemCard key={item.id} item={item} onClick={onItemClick} />
-            ))}
-          </div>
-        )}
-
-        <div className="text-center mt-12">
-          <Link
-            to="/catalog"
-            className="border border-gold-500 text-gold-500 px-8 py-3 rounded-full hover:bg-gold-500 hover:text-white transition"
-          >
-            לכל הקטלוג
-          </Link>
-        </div>
-
       </section>
 
     </div>
