@@ -43,7 +43,7 @@ export default function HomePage({ onItemClick }) {
 
         {/* HEADER */}
         <div className="absolute top-10 w-full text-center z-10 animate-fade-in">
-        <h1 className="font-display text-red-500 text-6xl">
+        <h1 style={{color:'red'}}>TEST🔥🔥🔥</h1>
 		  TEST NEW DESIGN 🔥
 		</h1>
 
