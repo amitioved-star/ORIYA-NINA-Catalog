@@ -8,7 +8,7 @@ export default function HomePage({ onItemClick }) {
   const [featured, setFeatured] = useState([])
   const [loading, setLoading] = useState(true)
 
-  const videos = ['/hero1.mp4', '/hero2.mp4', '/hero3.mp4', '/hero4.mp4']
+  const videos = ['/hero1.mp4', '/hero2.mp4', '/hero3.mp4', '/hero4.mp4','/hero5.mp4']
   const [currentVideo, setCurrentVideo] = useState(0)
 
   useEffect(() => {
