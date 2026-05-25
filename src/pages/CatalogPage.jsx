@@ -6,7 +6,8 @@ import { fetchItems } from '../lib/supabase'
 
 const CATEGORIES = [
   { value: 'all', label: 'הכל' },
-  { value: 'שמלה להשכרה', label: 'שמלות להשכרה' },
+  { value: 'שמלה להשכרה', label: 'שמלות להשכרה לנשים' },
+  { value: 'שמלה להשכרה לנערות', label: 'שמלות להשכרה לנערות' },
   { value: 'מטפחת למכירה', label: 'מטפחות למכירה' },
 ]
 

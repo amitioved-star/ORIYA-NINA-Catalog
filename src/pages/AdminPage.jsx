@@ -170,7 +170,8 @@ function Dashboard({ onLogout }) {
   const filtered = filterCat === 'all' ? items : items.filter(it => it.category === filterCat)
 
   // Stats
-  const dresses = items.filter(it => it.category === 'שמלה להשכרה').length
+  const dressesWomen = items.filter(it => it.category === 'שמלה להשכרה').length
+  const dressesGirls = items.filter(it => it.category === 'שמלה להשכרה לנערות').length
   const scarves = items.filter(it => it.category === 'מטפחת למכירה').length
   const available = items.filter(it => it.availability === 'פנוי').length
 
@@ -206,10 +207,11 @@ function Dashboard({ onLogout }) {
 
       <div className="max-w-6xl mx-auto px-4 py-8">
         {/* Stats */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
           {[
             { label: 'סה"כ פריטים', value: items.length, icon: Package },
-            { label: 'שמלות', value: dresses, icon: Sparkles },
+            { label: 'שמלות לנשים', value: dressesWomen, icon: Sparkles },
+            { label: 'שמלות לנערות', value: dressesGirls, icon: Sparkles },
             { label: 'מטפחות', value: scarves, icon: Star },
             { label: 'פנויים', value: available, icon: Check },
           ].map(s => (
@@ -226,17 +228,22 @@ function Dashboard({ onLogout }) {
         {/* Actions bar */}
         <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
           <div className="flex gap-2 flex-wrap">
-            {['all', 'שמלה להשכרה', 'מטפחת למכירה'].map(cat => (
+            {[
+              { value: 'all', label: 'הכל' },
+              { value: 'שמלה להשכרה', label: 'שמלות לנשים' },
+              { value: 'שמלה להשכרה לנערות', label: 'שמלות לנערות' },
+              { value: 'מטפחת למכירה', label: 'מטפחות' },
+            ].map(cat => (
               <button
-                key={cat}
-                onClick={() => setFilterCat(cat)}
+                key={cat.value}
+                onClick={() => setFilterCat(cat.value)}
                 className={`px-3 py-1.5 rounded-full text-sm border transition-all ${
-                  filterCat === cat
+                  filterCat === cat.value
                     ? 'bg-gold-500 text-white border-gold-500'
                     : 'border-cream-300 text-stone-600 hover:border-gold-300'
                 }`}
               >
-                {cat === 'all' ? 'הכל' : cat}
+                {cat.label}
               </button>
             ))}
           </div>
@@ -584,7 +591,8 @@ function ItemFormModal({ item, onSave, onClose }) {
                 onChange={e => set('category', e.target.value)}
                 className="input-field"
               >
-                <option value="שמלה להשכרה">שמלה להשכרה</option>
+                <option value="שמלה להשכרה">שמלה להשכרה לנשים</option>
+                <option value="שמלה להשכרה לנערות">שמלה להשכרה לנערות</option>
                 <option value="מטפחת למכירה">מטפחת למכירה</option>
               </select>
             </Field>

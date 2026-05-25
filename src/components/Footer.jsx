@@ -25,7 +25,15 @@ export default function Footer() {
                   to="/catalog?category=שמלה להשכרה"
                   className="hover:text-gold-300 transition-colors"
                 >
-                  שמלות להשכרה
+                  שמלות להשכרה לנשים
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/catalog?category=שמלה להשכרה לנערות"
+                  className="hover:text-gold-300 transition-colors"
+                >
+                  שמלות להשכרה לנערות
                 </Link>
               </li>
               <li>
