@@ -425,11 +425,31 @@ function AdminRow({ item, onEdit, onDelete, onQuickUpdate }) {
 
 // ─── Item Form Modal ────────────────────────────────────────────────────────
 
-function ItemFormModal({ item, onSave, onClose }) {
-  const [form, setForm] = useState(item
-    ? { ...item, images: Array.isArray(item.images) ? item.images : item.images ? [item.images] : [] }
-    : { ...EMPTY_FORM }
+function Field({ label, children }) {
+  return (
+    <div>
+      <label className="block text-sm font-medium text-stone-700 mb-1.5">
+        {label}
+      </label>
+      {children}
+    </div>
   )
+}
+
+function ItemFormModal({ item, onSave, onClose }) {
+  const [form, setForm] = useState(
+    item
+      ? {
+          ...item,
+          images: Array.isArray(item.images)
+            ? item.images
+            : item.images
+            ? [item.images]
+            : [],
+        }
+      : { ...EMPTY_FORM }
+  )
+
   const [uploading, setUploading] = useState(false)
   const [saving, setSaving] = useState(false)
   const [dragOver, setDragOver] = useState(false)
@@ -475,12 +495,7 @@ function ItemFormModal({ item, onSave, onClose }) {
     setSaving(false)
   }
 
-  const Field = ({ label, children }) => (
-    <div>
-      <label className="block text-sm font-medium text-stone-700 mb-1.5">{label}</label>
-      {children}
-    </div>
-  )
+ 
 
   return (
     <div
