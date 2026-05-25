@@ -112,6 +112,7 @@ function Dashboard({ onLogout }) {
   const [deleteConfirm, setDeleteConfirm] = useState(null)
   const [filterCat, setFilterCat] = useState('all')
   const [toast, setToast] = useState(null)
+  const [hoverPreview, setHoverPreview] = useState(null)
 
   const showToast = (msg, type = 'success') => {
     setToast({ msg, type })
@@ -292,6 +293,7 @@ function Dashboard({ onLogout }) {
                       onEdit={() => { setEditItem(item); setShowForm(true) }}
                       onDelete={() => setDeleteConfirm(item)}
                       onQuickUpdate={handleQuickUpdate}
+                      onHoverImage={setHoverPreview}
                     />
                   ))}
                 </tbody>
@@ -300,6 +302,24 @@ function Dashboard({ onLogout }) {
           </div>
         )}
       </div>
+
+      {/* Floating image preview on hover */}
+      {hoverPreview && (
+        <div
+          className="fixed z-[60] pointer-events-none transition-opacity duration-150"
+          style={{
+            top: hoverPreview.top,
+            left: hoverPreview.left - 16,
+            transform: 'translate(-100%, -50%)',
+          }}
+        >
+          <img
+            src={hoverPreview.url}
+            alt=""
+            className="w-72 h-auto max-h-[28rem] object-cover rounded-2xl shadow-2xl border-2 border-white"
+          />
+        </div>
+      )}
 
       {/* Item Form Modal */}
       {showForm && (
@@ -344,7 +364,7 @@ function Dashboard({ onLogout }) {
 
 // ─── Admin Row ─────────────────────────────────────────────────────────────
 
-function AdminRow({ item, onEdit, onDelete, onQuickUpdate }) {
+function AdminRow({ item, onEdit, onDelete, onQuickUpdate, onHoverImage }) {
   const firstImage = Array.isArray(item.images) ? item.images[0] : null
 
   const availColors = {
@@ -357,7 +377,15 @@ function AdminRow({ item, onEdit, onDelete, onQuickUpdate }) {
     <tr className="hover:bg-cream-50 transition-colors">
       <td className="px-4 py-3">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-12 rounded-lg overflow-hidden bg-cream-100 flex-shrink-0">
+          <div
+            className="w-10 h-12 rounded-lg overflow-hidden bg-cream-100 flex-shrink-0 cursor-zoom-in"
+            onMouseEnter={e => {
+              if (!firstImage) return
+              const rect = e.currentTarget.getBoundingClientRect()
+              onHoverImage({ url: firstImage, top: rect.top + rect.height / 2, left: rect.left })
+            }}
+            onMouseLeave={() => onHoverImage(null)}
+          >
             {firstImage ? (
               <img src={firstImage} alt="" className="w-full h-full object-cover" />
             ) : (
