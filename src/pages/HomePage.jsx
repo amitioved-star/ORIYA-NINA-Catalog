@@ -112,7 +112,7 @@ export default function HomePage({ onItemClick }) {
           <div className="space-y-3 text-gray-800 text-base">
 
             <p>
-              <span className="text-gold-500 font-semibold">מחיר פתיחה:</span> 300 ₪ בלבד (כולל ניקוי יבש)
+              <span className="text-gold-500 font-semibold">מחיר פתיחה:</span> 250 ₪ בלבד (כולל ניקוי יבש)
             </p>
 
             <p>
