@@ -3,6 +3,7 @@ import {
   Plus, Edit2, Trash2, X, Check, Eye, EyeOff, LogOut,
   Upload, Star, Sparkles, Package, ChevronDown
 } from 'lucide-react'
+import SEO from '../components/SEO'
 import {
   fetchItems, createItem, updateItem, deleteItem,
   uploadImage, deleteImage,
@@ -25,8 +26,18 @@ const EMPTY_FORM = {
 export default function AdminPage() {
   const [loggedIn, setLoggedIn] = useState(isAdminLoggedIn())
 
-  if (!loggedIn) return <LoginScreen onLogin={() => setLoggedIn(true)} />
-  return <Dashboard onLogout={() => { adminLogout(); setLoggedIn(false) }} />
+  if (!loggedIn) return (
+    <>
+      <SEO title="ניהול" description="כניסה לניהול ORIYA NINA" noindex />
+      <LoginScreen onLogin={() => setLoggedIn(true)} />
+    </>
+  )
+  return (
+    <>
+      <SEO title="לוח ניהול" description="לוח ניהול ORIYA NINA" noindex />
+      <Dashboard onLogout={() => { adminLogout(); setLoggedIn(false) }} />
+    </>
+  )
 }
 
 // ─── Login ─────────────────────────────────────────────────────────────────

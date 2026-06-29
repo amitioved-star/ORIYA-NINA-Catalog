@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react'
 import { X, ChevronRight, ChevronLeft } from 'lucide-react'
+import SEO from './SEO'
+import { itemProductSchema } from '../seoSchemas'
+import { trackWhatsApp, trackDressView } from '../lib/analytics'
 
 export default function ItemModal({ item, onClose }) {
   const images = Array.isArray(item.images)
@@ -20,6 +23,10 @@ export default function ItemModal({ item, onClose }) {
     }
   }, [onClose])
 
+  useEffect(() => {
+    if (item?.id != null) trackDressView(item, 'item_modal')
+  }, [item?.id])
+
   const nextImg = () => setActiveImg(i => (i + 1) % images.length)
   const prevImg = () => setActiveImg(i => (i - 1 + images.length) % images.length)
 
@@ -34,6 +41,13 @@ export default function ItemModal({ item, onClose }) {
   const avail = availabilityConfig[item.availability] || availabilityConfig['פנוי']
 
   return (
+    <>
+    <SEO
+      title={`${item.name} להשכרה בחריש`}
+      description={`${item.name} - ${item.category || 'שמלה להשכרה'} בסטודיו ORIYA NINA בחריש. לחצי לפרטים וזמינות בוואטסאפ.`}
+      image={images[0]}
+      jsonLd={itemProductSchema(item)}
+    />
     <div
       className="fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop"
       style={{ background: 'rgba(40,30,20,0.7)' }}
@@ -46,6 +60,7 @@ export default function ItemModal({ item, onClose }) {
           <button
             onClick={onClose}
             className="w-9 h-9 rounded-full bg-cream-100 flex items-center justify-center text-stone-500 hover:bg-cream-200 transition-colors flex-shrink-0"
+            aria-label="סגירת חלון הפריט"
           >
             <X size={18} />
           </button>
@@ -59,8 +74,9 @@ export default function ItemModal({ item, onClose }) {
               {images.length > 0 ? (
                 <img
                   src={images[activeImg]}
-                  alt={item.name}
+                  alt={`${item.name} - השכרת שמלות בחריש`}
                   className="w-full h-full object-cover"
+                  decoding="async"
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center text-stone-300">
@@ -77,12 +93,14 @@ export default function ItemModal({ item, onClose }) {
                   <button
                     onClick={prevImg}
                     className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/80 flex items-center justify-center shadow hover:bg-white transition-all"
+                    aria-label="תמונה קודמת"
                   >
                     <ChevronRight size={16} />
                   </button>
                   <button
                     onClick={nextImg}
                     className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/80 flex items-center justify-center shadow hover:bg-white transition-all"
+                    aria-label="תמונה הבאה"
                   >
                     <ChevronLeft size={16} />
                   </button>
@@ -101,7 +119,7 @@ export default function ItemModal({ item, onClose }) {
                       i === activeImg ? 'active border-gold-400' : 'border-transparent'
                     }`}
                   >
-                    <img src={img} alt="" className="w-full h-full object-cover" />
+                    <img src={img} alt={`${item.name} תמונה ${i + 1}`} className="w-full h-full object-cover" loading="lazy" decoding="async" />
                   </button>
                 ))}
               </div>
@@ -169,7 +187,14 @@ export default function ItemModal({ item, onClose }) {
                   href={whatsappUrl}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() => trackWhatsApp('item_modal', {
+                    item_id: item.id,
+                    item_name: item.name,
+                    item_category: item.category,
+                    price: item.price ?? undefined,
+                  })}
                   className="btn-whatsapp w-full py-3.5 text-base font-semibold rounded-2xl"
+                  aria-label={`פנייה בוואטסאפ על ${item.name}`}
                 >
                   <WhatsAppIcon />
                   <span>פנייה בוואטסאפ</span>
@@ -183,6 +208,7 @@ export default function ItemModal({ item, onClose }) {
         </div>
       </div>
     </div>
+    </>
   )
 }
 

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { Menu, X } from 'lucide-react'
+import { trackWhatsApp } from '../lib/analytics'
 
 export default function Navbar() {
   const [open, setOpen] = useState(false)
@@ -9,6 +10,8 @@ export default function Navbar() {
   const links = [
     { to: '/', label: 'בית' },
     { to: '/catalog', label: 'קטלוג' },
+    { to: '/dress-rental-harish', label: 'השכרת שמלות בחריש' },
+    { to: '/faq', label: 'שאלות' },
   ]
 
   return (
@@ -48,7 +51,9 @@ export default function Navbar() {
               href="https://wa.me/972506386895?text=שלום, אני מעוניינת לשאול על הפריטים שלכם"
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => trackWhatsApp('navbar_desktop')}
               className="btn-whatsapp text-sm py-2 px-4"
+              aria-label="יצירת קשר בוואטסאפ"
             >
               <WhatsAppIcon />
               <span>צרי קשר</span>
@@ -59,6 +64,8 @@ export default function Navbar() {
           <button
             className="md:hidden p-2 text-stone-600"
             onClick={() => setOpen(!open)}
+            aria-label={open ? 'סגירת תפריט' : 'פתיחת תפריט'}
+            aria-expanded={open}
           >
             {open ? <X size={22} /> : <Menu size={22} />}
           </button>
@@ -84,7 +91,9 @@ export default function Navbar() {
             href="https://wa.me/972506386895?text=שלום, אני מעוניינת לשאול על הפריטים שלכם"
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => { trackWhatsApp('navbar_mobile'); setOpen(false) }}
             className="btn-whatsapp text-sm py-2 w-full mt-2"
+            aria-label="יצירת קשר בוואטסאפ"
           >
             <WhatsAppIcon />
             <span>צרי קשר בוואטסאפ</span>

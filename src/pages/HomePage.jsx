@@ -2,7 +2,11 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import ItemCard from '../components/ItemCard'
 import { fetchItems } from '../lib/supabase'
-import { Sparkles, Crown, Gem } from 'lucide-react'
+import { Sparkles, Crown, Gem, MapPin, MessageCircle } from 'lucide-react'
+import SEO from '../components/SEO'
+import { buildWhatsappUrl } from '../constants'
+import { localBusinessSchema, websiteSchema, organizationSchema } from '../seoSchemas'
+import { trackWhatsApp, trackBookMeasurement } from '../lib/analytics'
 
 export default function HomePage({ onItemClick }) {
   const [featured, setFeatured] = useState([])
@@ -24,6 +28,11 @@ export default function HomePage({ onItemClick }) {
 
   return (
     <div className="bg-[#fffaf5] text-stone-900">
+      <SEO
+        title="השכרת שמלות ערב בחריש לנשים ולנערות"
+        description="ORIYA NINA – השכרת שמלות ערב לנשים ולנערות בחריש, חדרה, פרדס חנה והסביבה. שמלות צנועות ויוקרתיות לאירועים החל מ־250 ₪ כולל ניקוי יבש."
+        jsonLd={[organizationSchema(), localBusinessSchema(), websiteSchema()]}
+      />
 
       {/* HERO */}
       <section className="relative h-screen overflow-hidden">
@@ -34,6 +43,8 @@ export default function HomePage({ onItemClick }) {
           autoPlay
           muted
           playsInline
+          preload="metadata"
+          aria-label="סטודיו ORIYA NINA — סרטון רקע"
           onEnded={handleVideoEnd}
           className="absolute w-full h-full object-cover brightness-105 contrast-115 saturate-105 scale-105"
         >
@@ -61,7 +72,7 @@ export default function HomePage({ onItemClick }) {
         <div className="relative z-10 h-full flex flex-col justify-end pb-32 items-center text-center px-6 text-white">
 
           <p className="text-lg md:text-xl text-stone-200 max-w-xl mb-10">
-            סטודיו להשכרת שמלות ערב צנועות ויוקרתיות בהתאמה אישית לכל אירוע
+            סטודיו להשכרת שמלות ערב בחריש – שמלות צנועות ויוקרתיות לנשים ולנערות בהתאמה אישית לכל אירוע
           </p>
 
           <div className="flex gap-4 flex-wrap justify-center">
@@ -74,8 +85,12 @@ export default function HomePage({ onItemClick }) {
             </Link>
 
             <a
-              href="https://wa.me/972506386895"
+              href={buildWhatsappUrl('שלום, אני מעוניינת לקבוע מדידה לשמלה')}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => { trackWhatsApp('home_hero'); trackBookMeasurement('home_hero') }}
               className="border border-white px-8 py-3 rounded-full hover:bg-white hover:text-black transition"
+              aria-label="קביעת מדידה בוואטסאפ"
             >
               קביעת מדידה
             </a>
@@ -131,13 +146,39 @@ export default function HomePage({ onItemClick }) {
 
           <div className="mt-10">
             <a
-              href="https://wa.me/972506386895"
+              href={buildWhatsappUrl('שלום, אשמח לקבוע מדידה אישית')}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => { trackWhatsApp('home_details_section'); trackBookMeasurement('home_details_section') }}
               className="bg-gradient-to-r from-[#C9A55A] to-[#E8CFA0] text-white px-10 py-4 rounded-full text-lg"
+              aria-label="קביעת מדידה אישית בוואטסאפ"
             >
               קביעת מדידה אישית
             </a>
           </div>
 
+        </div>
+      </section>
+
+
+      {/* SEO Local Section */}
+      <section className="py-20 px-6 bg-white">
+        <div className="max-w-6xl mx-auto grid gap-8 md:grid-cols-3">
+          <div className="rounded-3xl border border-cream-200 bg-cream-50 p-7 shadow-sm">
+            <MapPin className="text-gold-500 mb-4" size={28} />
+            <h2 className="text-xl font-semibold text-stone-800 mb-3">השכרת שמלות ערב בחריש</h2>
+            <p className="leading-7 text-stone-600">מבחר שמלות ערב צנועות ויוקרתיות לנשים ולנערות באזור חריש, חדרה, פרדס חנה וקציר.</p>
+          </div>
+          <div className="rounded-3xl border border-cream-200 bg-cream-50 p-7 shadow-sm">
+            <Sparkles className="text-gold-500 mb-4" size={28} />
+            <h2 className="text-xl font-semibold text-stone-800 mb-3">מחירים ברורים ונוחים</h2>
+            <p className="leading-7 text-stone-600">שמלות לנשים החל מ־250 ₪ כולל ניקוי יבש, ושמלות לנערות ובת מצווה ב־200 ₪ בהתאם למלאי.</p>
+          </div>
+          <div className="rounded-3xl border border-cream-200 bg-cream-50 p-7 shadow-sm">
+            <MessageCircle className="text-gold-500 mb-4" size={28} />
+            <h2 className="text-xl font-semibold text-stone-800 mb-3">קביעת מדידה מהירה</h2>
+            <p className="leading-7 text-stone-600">ראית שמלה שאהבת? לחיצה אחת על וואטסאפ ומקבלים פרטים על זמינות וקביעת מדידה.</p>
+          </div>
         </div>
       </section>
 

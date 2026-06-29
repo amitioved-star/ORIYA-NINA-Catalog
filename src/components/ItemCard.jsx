@@ -1,3 +1,5 @@
+import { trackWhatsApp, trackDressView } from '../lib/analytics'
+
 export default function ItemCard({ item, onClick }) {
   const firstImage = Array.isArray(item.images) ? item.images[0] : item.images
 
@@ -10,19 +12,33 @@ export default function ItemCard({ item, onClick }) {
   const whatsappMsg = encodeURIComponent(`שלום, אני מתעניינת בפריט: ${item.name}`)
   const whatsappUrl = `https://wa.me/972506386895?text=${whatsappMsg}`
 
+  const handleDetails = () => {
+    trackDressView(item, 'item_card')
+    onClick(item)
+  }
+  const handleWhatsApp = () => {
+    trackWhatsApp('item_card', {
+      item_id: item.id,
+      item_name: item.name,
+      item_category: item.category,
+      price: item.price ?? undefined,
+    })
+  }
+
   return (
     <div className="card group cursor-pointer animate-fade-in">
       {/* Image */}
       <div
         className="relative overflow-hidden bg-cream-100 aspect-[3/4]"
-        onClick={() => onClick(item)}
+        onClick={handleDetails}
       >
         {firstImage ? (
           <img
             src={firstImage}
-            alt={item.name}
+            alt={`${item.name} - ${item.category || 'השכרת שמלות ערב בחריש'}`}
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
             loading="lazy"
+            decoding="async"
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center text-stone-300">
@@ -53,7 +69,7 @@ export default function ItemCard({ item, onClick }) {
         <div className="flex items-start justify-between gap-2 mb-2">
           <h3
             className="font-semibold text-stone-800 text-base leading-tight line-clamp-2 cursor-pointer hover:text-gold-600 transition-colors"
-            onClick={() => onClick(item)}
+            onClick={handleDetails}
           >
             {item.name}
           </h3>
@@ -87,7 +103,7 @@ export default function ItemCard({ item, onClick }) {
         {/* Actions */}
         <div className="flex gap-2">
           <button
-            onClick={() => onClick(item)}
+            onClick={handleDetails}
             className="flex-1 border border-gold-400 text-gold-600 text-sm py-2 rounded-full hover:bg-gold-500 hover:text-white transition-all duration-200 font-medium"
           >
             פרטים נוספים
@@ -96,8 +112,10 @@ export default function ItemCard({ item, onClick }) {
             href={whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={handleWhatsApp}
             className="btn-whatsapp text-sm py-2 px-3 flex-shrink-0"
             title="פנייה בוואטסאפ"
+            aria-label={`פנייה בוואטסאפ על ${item.name}`}
           >
             <WhatsAppIcon />
           </a>

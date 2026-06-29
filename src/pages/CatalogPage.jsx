@@ -1,8 +1,11 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { Search, SlidersHorizontal, X } from 'lucide-react'
+import { Search, X } from 'lucide-react'
 import ItemCard from '../components/ItemCard'
+import SEO from '../components/SEO'
+import { breadcrumbSchema, catalogItemListSchema } from '../seoSchemas'
 import { fetchItems } from '../lib/supabase'
+import { trackCatalogView } from '../lib/analytics'
 
 const CATEGORIES = [
   { value: 'all', label: 'הכל' },
@@ -46,6 +49,21 @@ export default function CatalogPage({ onItemClick }) {
     if (cat) setCategory(cat)
   }, [searchParams])
 
+  // Fire catalog_view whenever the visible set changes meaningfully.
+  const lastViewKey = useRef('')
+  useEffect(() => {
+    if (loading) return
+    const key = `${category}|${availableOnly}|${search}|${items.length}`
+    if (key === lastViewKey.current) return
+    lastViewKey.current = key
+    trackCatalogView({
+      category,
+      available_only: availableOnly,
+      search_term: search || undefined,
+      results_count: items.length,
+    })
+  }, [loading, category, availableOnly, search, items.length])
+
   const handleCategory = (cat) => {
     setCategory(cat)
     if (cat !== 'all') setSearchParams({ category: cat })
@@ -54,8 +72,18 @@ export default function CatalogPage({ onItemClick }) {
 
   const clearSearch = () => setSearch('')
 
+  const seoTitle = category === 'שמלה להשכרה לנערות' ? 'קטלוג שמלות לנערות ובת מצווה בחריש' : category === 'שמלה להשכרה' ? 'קטלוג שמלות ערב לנשים בחריש' : 'קטלוג שמלות ערב להשכרה בחריש'
+
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
+      <SEO
+        title={seoTitle}
+        description="קטלוג ORIYA NINA להשכרת שמלות ערב לנשים ולנערות בחריש והסביבה. חיפוש לפי צבע, מידה, קטגוריה וזמינות."
+        jsonLd={[
+          breadcrumbSchema([{ name: 'בית', path: '/' }, { name: 'קטלוג', path: '/catalog' }]),
+          ...(items.length ? [catalogItemListSchema(items)] : []),
+        ]}
+      />
       {/* Page Header */}
       <div className="text-center mb-8">
         <p className="text-gold-500 text-sm font-medium tracking-wider mb-2">כל הפריטים</p>
@@ -77,11 +105,13 @@ export default function CatalogPage({ onItemClick }) {
             onChange={e => setSearch(e.target.value)}
             placeholder="חיפוש לפי שם, צבע, מידה..."
             className="input-field pr-10"
+            aria-label="חיפוש בקטלוג"
           />
           {search && (
             <button
               onClick={clearSearch}
               className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-300 hover:text-stone-500"
+              aria-label="ניקוי חיפוש"
             >
               <X size={16} />
             </button>

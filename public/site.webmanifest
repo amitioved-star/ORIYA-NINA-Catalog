@@ -1,0 +1,14 @@
+{
+  "name": "ORIYA NINA - השכרת שמלות ערב בחריש",
+  "short_name": "ORIYA NINA",
+  "description": "השכרת שמלות ערב לנשים ולנערות בחריש והסביבה",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FDFAF5",
+  "theme_color": "#C9A55A",
+  "dir": "rtl",
+  "lang": "he-IL",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}

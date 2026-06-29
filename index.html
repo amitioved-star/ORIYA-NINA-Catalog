@@ -2,32 +2,48 @@
 <html lang="he" dir="rtl">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#C9A55A" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
 
-    <title>ORIYA NINA | השכרת שמלות ערב</title>
-    <meta name="description" content="סטודיו להשכרת שמלות ערב צנועות ויוקרתיות בהתאמה אישית לכל אירוע" />
+    <title>ORIYA NINA | השכרת שמלות ערב בחריש לנשים ולנערות</title>
+    <meta name="description" content="השכרת שמלות ערב לנשים ולנערות בחריש, חדרה, פרדס חנה והסביבה. שמלות צנועות ויוקרתיות לאירועים, חתונות ובת מצווה החל מ־250 ₪ כולל ניקוי יבש." />
+    <meta name="keywords" content="השכרת שמלות חריש, שמלות ערב חריש, השכרת שמלות ערב בחריש, שמלות לנערות בחריש, שמלות בת מצווה חריש, שמלות צנועות להשכרה" />
+    <link rel="canonical" href="https://oriya-nina-catalog.vercel.app/" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <meta property="og:locale" content="he_IL" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="ORIYA NINA" />
+    <meta property="og:title" content="ORIYA NINA | השכרת שמלות ערב בחריש" />
+    <meta property="og:description" content="שמלות ערב לנשים ולנערות בחריש והסביבה. קטלוג עדכני, זמינות ומדידה דרך וואטסאפ." />
+    <meta property="og:url" content="https://oriya-nina-catalog.vercel.app/" />
+    <meta property="og:image" content="https://oriya-nina-catalog.vercel.app/og-image.svg" />
+    <meta name="twitter:card" content="summary_large_image" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
 
-    <!-- 🔥 Google Analytics -->
+    <!-- Preconnect to Supabase (image CDN + API). VITE_SUPABASE_URL is the public origin. -->
+    <link rel="preconnect" href="%VITE_SUPABASE_URL%" crossorigin />
+    <link rel="dns-prefetch" href="%VITE_SUPABASE_URL%" />
+
+    <!-- Google Analytics 4 — gtag base. Page views fire from the SPA router. -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-JKLZYEZXQT"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
+      window.gtag = gtag;
       gtag('js', new Date());
-
-      gtag('config', 'G-JKLZYEZXQT');
+      gtag('config', 'G-JKLZYEZXQT', { send_page_view: false });
     </script>
-
   </head>
 
   <body>
     <div id="root"></div>
-
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

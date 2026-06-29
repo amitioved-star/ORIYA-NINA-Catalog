@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="g" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#fffaf5"/>
+      <stop offset="1" stop-color="#f3dfbd"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#g)"/>
+  <circle cx="600" cy="145" r="45" fill="#c9a55a"/>
+  <text x="600" y="158" text-anchor="middle" font-size="40" fill="white">✦</text>
+  <text x="600" y="260" text-anchor="middle" font-family="Arial, sans-serif" font-size="72" font-weight="700" fill="#2f2924">ORIYA NINA</text>
+  <text x="600" y="335" text-anchor="middle" font-family="Arial, sans-serif" font-size="44" font-weight="700" fill="#7a5b21">השכרת שמלות ערב בחריש</text>
+  <text x="600" y="400" text-anchor="middle" font-family="Arial, sans-serif" font-size="30" fill="#4f463f">שמלות לנשים ולנערות · החל מ־250 ₪</text>
+  <rect x="410" y="465" width="380" height="62" rx="31" fill="#c9a55a"/>
+  <text x="600" y="507" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" font-weight="700" fill="white">קביעת מדידה בוואטסאפ</text>
+</svg>
