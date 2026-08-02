@@ -20,9 +20,7 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center">
-              <span className="text-white text-xs font-bold">✦</span>
-            </div>
+            <img src="/logo.png" alt="ORIYA NINA" className="w-10 h-10 object-contain rounded-full" />
             <span className="font-display text-xl text-stone-800 hidden sm:block">
               ORIYA NINA
             </span>
