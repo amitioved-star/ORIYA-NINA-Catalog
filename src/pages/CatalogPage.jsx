@@ -16,8 +16,31 @@ const CATEGORIES = [
 
 // Women's dresses before girls' dresses when showing everything together.
 const CATEGORY_SORT_ORDER = { 'שמלה להשכרה': 0, 'שמלה להשכרה לנערות': 1 }
-const sortByCategory = (items) =>
-  [...items].sort((a, b) => (CATEGORY_SORT_ORDER[a.category] ?? 2) - (CATEGORY_SORT_ORDER[b.category] ?? 2))
+
+// Within each category, group same-color dresses next to each other, in this order.
+const COLOR_GROUP_ORDER = ['שמפניה', 'כחול', 'תכלת', 'ירוק', 'שחור']
+const COLOR_GROUP_KEYWORDS = {
+  'שמפניה': ['שמפניה'],
+  'כחול': ['כחול', 'נייבי'],
+  'תכלת': ['תכלת'],
+  'ירוק': ['ירוק', 'אמרלד', 'זית', 'מרווה'],
+  'שחור': ['שחור'],
+}
+
+function colorGroupIndex(color) {
+  if (!color) return COLOR_GROUP_ORDER.length
+  const match = COLOR_GROUP_ORDER.findIndex(group =>
+    COLOR_GROUP_KEYWORDS[group].some(keyword => color.includes(keyword))
+  )
+  return match === -1 ? COLOR_GROUP_ORDER.length : match
+}
+
+const sortByCategoryAndColor = (items) =>
+  [...items].sort((a, b) => {
+    const catDiff = (CATEGORY_SORT_ORDER[a.category] ?? 2) - (CATEGORY_SORT_ORDER[b.category] ?? 2)
+    if (catDiff !== 0) return catDiff
+    return colorGroupIndex(a.color) - colorGroupIndex(b.color)
+  })
 
 export default function CatalogPage({ onItemClick }) {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -36,7 +59,7 @@ export default function CatalogPage({ onItemClick }) {
         availability: availableOnly ? 'available' : undefined,
         search: search || undefined,
       })
-      setItems(sortByCategory(data || []))
+      setItems(sortByCategoryAndColor(data || []))
     } catch {
       setItems([])
     } finally {
