@@ -14,6 +14,11 @@ const CATEGORIES = [
   { value: 'מטפחת למכירה', label: 'מטפחות למכירה' },
 ]
 
+// Women's dresses before girls' dresses when showing everything together.
+const CATEGORY_SORT_ORDER = { 'שמלה להשכרה': 0, 'שמלה להשכרה לנערות': 1 }
+const sortByCategory = (items) =>
+  [...items].sort((a, b) => (CATEGORY_SORT_ORDER[a.category] ?? 2) - (CATEGORY_SORT_ORDER[b.category] ?? 2))
+
 export default function CatalogPage({ onItemClick }) {
   const [searchParams, setSearchParams] = useSearchParams()
   const [items, setItems] = useState([])
@@ -31,7 +36,7 @@ export default function CatalogPage({ onItemClick }) {
         availability: availableOnly ? 'available' : undefined,
         search: search || undefined,
       })
-      setItems(data || [])
+      setItems(sortByCategory(data || []))
     } catch {
       setItems([])
     } finally {
