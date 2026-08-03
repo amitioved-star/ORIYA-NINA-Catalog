@@ -1022,6 +1022,7 @@ function BookingCalendar() {
 function DayBookingModal({ date, items, bookings, onClose, onChanged }) {
   const [search, setSearch] = useState('')
   const [savingId, setSavingId] = useState(null)
+  const [hoverPreview, setHoverPreview] = useState(null)
 
   const bookingByItemId = new Map(bookings.map(b => [b.item_id, b.id]))
   const filtered = search
@@ -1078,6 +1079,7 @@ function DayBookingModal({ date, items, bookings, onClose, onChanged }) {
           ) : (
             filtered.map(item => {
               const isBooked = bookingByItemId.has(item.id)
+              const thumb = Array.isArray(item.images) ? item.images[0] : null
               return (
                 <label
                   key={item.id}
@@ -1090,6 +1092,21 @@ function DayBookingModal({ date, items, bookings, onClose, onChanged }) {
                     onChange={() => toggle(item)}
                     className="w-4 h-4 accent-gold-500"
                   />
+                  <div
+                    className="w-10 h-12 rounded-lg overflow-hidden bg-cream-100 flex-shrink-0 cursor-zoom-in"
+                    onMouseEnter={e => {
+                      if (!thumb) return
+                      const rect = e.currentTarget.getBoundingClientRect()
+                      setHoverPreview({ url: thumb, top: rect.top + rect.height / 2, left: rect.left })
+                    }}
+                    onMouseLeave={() => setHoverPreview(null)}
+                  >
+                    {thumb ? (
+                      <img src={thumb} alt="" className="w-full h-full object-cover" />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-stone-300 text-xs">🖼</div>
+                    )}
+                  </div>
                   <span className={`text-sm flex-1 ${isBooked ? 'text-red-600 font-medium' : 'text-stone-700'}`}>
                     {item.name}
                   </span>
@@ -1102,6 +1119,23 @@ function DayBookingModal({ date, items, bookings, onClose, onChanged }) {
           )}
         </div>
       </div>
+
+      {hoverPreview && (
+        <div
+          className="fixed z-[70] pointer-events-none transition-opacity duration-150"
+          style={{
+            top: hoverPreview.top,
+            left: hoverPreview.left - 16,
+            transform: 'translate(-100%, -50%)',
+          }}
+        >
+          <img
+            src={hoverPreview.url}
+            alt=""
+            className="w-72 h-auto max-h-[28rem] object-cover rounded-2xl shadow-2xl border-2 border-white"
+          />
+        </div>
+      )}
     </div>
   )
 }
