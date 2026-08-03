@@ -895,15 +895,25 @@ const WEEKDAY_LABELS = ['א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ש']
 function BookingCalendar() {
   const [monthDate, setMonthDate] = useState(() => new Date())
   const [bookings, setBookings] = useState([])
+  const [allItems, setAllItems] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+  const [selectedDate, setSelectedDate] = useState(null)
 
-  useEffect(() => {
-    fetchAllBookedDates()
-      .then(setBookings)
-      .catch(() => setError('שגיאה בטעינת היומן'))
-      .finally(() => setLoading(false))
-  }, [])
+  const loadAll = async () => {
+    try {
+      const [bookingsData, itemsData] = await Promise.all([fetchAllBookedDates(), fetchItems()])
+      setBookings(bookingsData)
+      setAllItems(itemsData || [])
+      setError('')
+    } catch {
+      setError('שגיאה בטעינת היומן')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => { loadAll() }, [])
 
   const year = monthDate.getFullYear()
   const month = monthDate.getMonth()
@@ -964,7 +974,8 @@ function BookingCalendar() {
               return (
                 <div
                   key={i}
-                  className={`rounded-xl p-2 min-h-[76px] border text-xs ${
+                  onClick={() => setSelectedDate(date)}
+                  className={`rounded-xl p-2 min-h-[76px] border text-xs cursor-pointer transition-shadow hover:shadow-md ${
                     dayBookings.length > 0 ? 'bg-red-50 border-red-200' : 'bg-cream-50 border-cream-200'
                   } ${isToday ? 'ring-2 ring-gold-400' : ''}`}
                 >
@@ -994,6 +1005,103 @@ function BookingCalendar() {
           </div>
         </>
       )}
+
+      {selectedDate && (
+        <DayBookingModal
+          date={selectedDate}
+          items={allItems}
+          bookings={bookings.filter(b => b.booked_date === selectedDate)}
+          onClose={() => setSelectedDate(null)}
+          onChanged={loadAll}
+        />
+      )}
+    </div>
+  )
+}
+
+function DayBookingModal({ date, items, bookings, onClose, onChanged }) {
+  const [search, setSearch] = useState('')
+  const [savingId, setSavingId] = useState(null)
+
+  const bookingByItemId = new Map(bookings.map(b => [b.item_id, b.id]))
+  const filtered = search
+    ? items.filter(it => it.name?.includes(search))
+    : items
+
+  const toggle = async (item) => {
+    setSavingId(item.id)
+    try {
+      if (bookingByItemId.has(item.id)) {
+        await deleteBookedDate(bookingByItemId.get(item.id))
+      } else {
+        await addBookedDate(item.id, date)
+      }
+      await onChanged()
+    } catch (err) {
+      alert('שגיאה בעדכון תאריך: ' + err.message)
+    } finally {
+      setSavingId(null)
+    }
+  }
+
+  return (
+    <div
+      className="fixed inset-0 z-[60] flex items-center justify-center p-4"
+      style={{ background: 'rgba(40,30,20,0.65)' }}
+      onClick={(e) => { if (e.target === e.currentTarget) onClose() }}
+    >
+      <div className="bg-white rounded-3xl w-full max-w-md max-h-[85vh] flex flex-col shadow-2xl animate-scale-in">
+        <div className="flex items-center justify-between p-5 border-b border-cream-200">
+          <h3 className="text-lg font-semibold text-stone-800">{formatBookedDate(date)}</h3>
+          <button
+            onClick={onClose}
+            className="w-8 h-8 rounded-full bg-cream-100 flex items-center justify-center text-stone-500 hover:bg-cream-200"
+            aria-label="סגירה"
+          >
+            <X size={16} />
+          </button>
+        </div>
+
+        <div className="p-4 border-b border-cream-200">
+          <input
+            type="text"
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            placeholder="חיפוש שמלה..."
+            className="input-field"
+          />
+        </div>
+
+        <div className="overflow-y-auto flex-1 p-2">
+          {filtered.length === 0 ? (
+            <p className="text-stone-400 text-sm text-center py-8">לא נמצאו שמלות</p>
+          ) : (
+            filtered.map(item => {
+              const isBooked = bookingByItemId.has(item.id)
+              return (
+                <label
+                  key={item.id}
+                  className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-cream-50 cursor-pointer"
+                >
+                  <input
+                    type="checkbox"
+                    checked={isBooked}
+                    disabled={savingId === item.id}
+                    onChange={() => toggle(item)}
+                    className="w-4 h-4 accent-gold-500"
+                  />
+                  <span className={`text-sm flex-1 ${isBooked ? 'text-red-600 font-medium' : 'text-stone-700'}`}>
+                    {item.name}
+                  </span>
+                  {savingId === item.id && (
+                    <div className="spinner" style={{ width: 14, height: 14, borderWidth: 2 }} />
+                  )}
+                </label>
+              )
+            })
+          )}
+        </div>
+      </div>
     </div>
   )
 }
