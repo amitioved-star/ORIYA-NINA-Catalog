@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import ItemCard from '../components/ItemCard'
-import { fetchItems } from '../lib/supabase'
+import { fetchItems, fetchBookedDatesMap } from '../lib/supabase'
 import { Sparkles, Crown, Gem, MapPin, MessageCircle } from 'lucide-react'
 import SEO from '../components/SEO'
 import { buildWhatsappUrl } from '../constants'
@@ -16,8 +16,14 @@ export default function HomePage({ onItemClick }) {
   const [currentVideo, setCurrentVideo] = useState(0)
 
   useEffect(() => {
-    fetchItems()
-      .then(data => setFeatured((data || []).slice(0, 8)))
+    Promise.all([fetchItems(), fetchBookedDatesMap()])
+      .then(([data, bookedDatesMap]) => {
+        const withBookedDates = (data || []).map(item => ({
+          ...item,
+          bookedDates: bookedDatesMap[item.id] || [],
+        }))
+        setFeatured(withBookedDates.slice(0, 8))
+      })
       .catch(() => setFeatured([]))
       .finally(() => setLoading(false))
   }, [])

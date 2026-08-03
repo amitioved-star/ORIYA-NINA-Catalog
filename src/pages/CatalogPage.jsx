@@ -4,7 +4,8 @@ import { Search, X } from 'lucide-react'
 import ItemCard from '../components/ItemCard'
 import SEO from '../components/SEO'
 import { breadcrumbSchema, catalogItemListSchema } from '../seoSchemas'
-import { fetchItems } from '../lib/supabase'
+import { fetchItems, fetchBookedDatesMap } from '../lib/supabase'
+import { computeEffectiveAvailability } from '../constants'
 import { trackCatalogView } from '../lib/analytics'
 
 const CATEGORIES = [
@@ -54,12 +55,22 @@ export default function CatalogPage({ onItemClick }) {
   const load = useCallback(async () => {
     setLoading(true)
     try {
-      const data = await fetchItems({
-        category: category !== 'all' ? category : undefined,
-        availability: availableOnly ? 'available' : undefined,
-        search: search || undefined,
-      })
-      setItems(sortByCategoryAndColor(data || []))
+      const [data, bookedDatesMap] = await Promise.all([
+        fetchItems({
+          category: category !== 'all' ? category : undefined,
+          search: search || undefined,
+        }),
+        fetchBookedDatesMap(),
+      ])
+      const withBookedDates = (data || []).map(item => ({
+        ...item,
+        bookedDates: bookedDatesMap[item.id] || [],
+      }))
+      // Filtered here (not via the server query) so an active booking window is accounted for too.
+      const filtered = availableOnly
+        ? withBookedDates.filter(item => computeEffectiveAvailability(item) === 'פנוי')
+        : withBookedDates
+      setItems(sortByCategoryAndColor(filtered))
     } catch {
       setItems([])
     } finally {

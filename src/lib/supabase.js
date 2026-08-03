@@ -127,6 +127,73 @@ export async function deleteImage(url) {
   }
 }
 
+// ─── Booked Dates ────────────────────────────────
+
+// Map of item_id -> sorted array of upcoming booked dates ('YYYY-MM-DD'). Past dates excluded.
+export async function fetchBookedDatesMap() {
+  const today = new Date().toISOString().slice(0, 10)
+  const { data, error } = await supabase
+    .from('booked_dates')
+    .select('item_id, booked_date')
+    .gte('booked_date', today)
+    .order('booked_date', { ascending: true })
+
+  if (error) {
+    console.log('❌ fetchBookedDatesMap error:', error)
+    return {}
+  }
+
+  const map = {}
+  for (const row of data) {
+    if (!map[row.item_id]) map[row.item_id] = []
+    map[row.item_id].push(row.booked_date)
+  }
+  return map
+}
+
+// Full history (including past dates) for a single item — used in the admin panel.
+export async function fetchBookedDatesForItem(itemId) {
+  const { data, error } = await supabase
+    .from('booked_dates')
+    .select('*')
+    .eq('item_id', itemId)
+    .order('booked_date', { ascending: true })
+
+  if (error) {
+    console.log('❌ fetchBookedDatesForItem error:', error)
+    throw error
+  }
+
+  return data
+}
+
+export async function addBookedDate(itemId, date) {
+  const { data, error } = await supabase
+    .from('booked_dates')
+    .insert([{ item_id: itemId, booked_date: date }])
+    .select()
+    .single()
+
+  if (error) {
+    console.log('❌ addBookedDate error:', error)
+    throw error
+  }
+
+  return data
+}
+
+export async function deleteBookedDate(id) {
+  const { error } = await supabase
+    .from('booked_dates')
+    .delete()
+    .eq('id', id)
+
+  if (error) {
+    console.log('❌ deleteBookedDate error:', error)
+    throw error
+  }
+}
+
 // ─── Admin Auth ──────────────────────────────────
 
 export async function adminLogin(password) {

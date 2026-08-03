@@ -35,3 +35,42 @@ export function absoluteUrl(path = '/') {
   if (path.startsWith('http')) return path
   return `${SITE.url}${path.startsWith('/') ? path : `/${path}`}`
 }
+
+// 'YYYY-MM-DD' -> 'DD.MM.YYYY', formatted without Date parsing to avoid timezone shifts.
+export function formatBookedDate(isoDate) {
+  const [year, month, day] = isoDate.split('-')
+  return `${day}.${month}.${year}`
+}
+
+function localISODate(date = new Date()) {
+  const y = date.getFullYear()
+  const m = String(date.getMonth() + 1).padStart(2, '0')
+  const d = String(date.getDate()).padStart(2, '0')
+  return `${y}-${m}-${d}`
+}
+
+function addDays(isoDate, days) {
+  const [y, m, d] = isoDate.split('-').map(Number)
+  const dt = new Date(y, m - 1, d)
+  dt.setDate(dt.getDate() + days)
+  return localISODate(dt)
+}
+
+const AVAILABILITY_LEVEL = { 'פנוי': 0, 'שמור': 1, 'לא זמין': 2 }
+
+// A dress automatically shows as "שמור" starting the day before a booked date and through
+// the booked date itself, then reverts to its manual status the day after — no admin action needed.
+// A manual status stricter than "שמור" (i.e. "לא זמין") always wins and is never loosened.
+export function computeEffectiveAvailability(item) {
+  const manual = item.availability || 'פנוי'
+  const bookedDates = item.bookedDates || []
+  const today = localISODate()
+
+  const hasActiveBooking = bookedDates.some(bookedDate => {
+    const windowStart = addDays(bookedDate, -1)
+    return today >= windowStart && today <= bookedDate
+  })
+
+  if (!hasActiveBooking) return manual
+  return (AVAILABILITY_LEVEL[manual] ?? 0) >= AVAILABILITY_LEVEL['שמור'] ? manual : 'שמור'
+}

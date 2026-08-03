@@ -7,8 +7,10 @@ import SEO from '../components/SEO'
 import {
   fetchItems, createItem, updateItem, deleteItem,
   uploadImage, deleteImage,
+  fetchBookedDatesForItem, addBookedDate, deleteBookedDate,
   adminLogin, isAdminLoggedIn, adminLogout
 } from '../lib/supabase'
+import { formatBookedDate } from '../constants'
 
 const EMPTY_FORM = {
   name: '',
@@ -713,6 +715,9 @@ function ItemFormModal({ item, onSave, onClose }) {
               </label>
             ))}
           </div>
+
+          {/* Booked dates */}
+          {item?.id && <BookedDatesSection itemId={item.id} />}
         </div>
 
         {/* Footer */}
@@ -742,6 +747,110 @@ function ItemFormModal({ item, onSave, onClose }) {
           </button>
         </div>
       </div>
+    </div>
+  )
+}
+
+// ─── Booked Dates ───────────────────────────────────────────────────────────
+
+function BookedDatesSection({ itemId }) {
+  const [dates, setDates] = useState([])
+  const [newDate, setNewDate] = useState('')
+  const [loading, setLoading] = useState(true)
+  const [saving, setSaving] = useState(false)
+  const [error, setError] = useState('')
+
+  const load = async () => {
+    setLoading(true)
+    try {
+      setDates(await fetchBookedDatesForItem(itemId))
+      setError('')
+    } catch {
+      setError('שגיאה בטעינת תאריכים')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => { load() }, [itemId])
+
+  const handleAdd = async () => {
+    if (!newDate) return
+    setSaving(true)
+    setError('')
+    try {
+      await addBookedDate(itemId, newDate)
+      setNewDate('')
+      await load()
+    } catch (err) {
+      setError(err.code === '23505' ? 'התאריך הזה כבר מסומן כתפוס' : 'שגיאה בהוספת תאריך')
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  const handleDelete = async (id) => {
+    try {
+      await deleteBookedDate(id)
+      setDates(prev => prev.filter(d => d.id !== id))
+    } catch {
+      setError('שגיאה במחיקת תאריך')
+    }
+  }
+
+  const today = new Date().toISOString().slice(0, 10)
+
+  return (
+    <div className="pt-2">
+      <label className="block text-sm font-medium text-stone-700 mb-1.5">
+        תאריכים תפוסים (יומן השכרה)
+      </label>
+
+      <div className="flex gap-2 mb-3">
+        <input
+          type="date"
+          value={newDate}
+          onChange={e => setNewDate(e.target.value)}
+          min={today}
+          className="input-field flex-1"
+        />
+        <button
+          onClick={handleAdd}
+          disabled={!newDate || saving}
+          className="btn-primary px-4 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          הוספה
+        </button>
+      </div>
+
+      {error && (
+        <p className="text-red-500 text-xs mb-2">{error}</p>
+      )}
+
+      {loading ? (
+        <div className="flex justify-center py-3"><div className="spinner" style={{ width: 20, height: 20 }} /></div>
+      ) : dates.length === 0 ? (
+        !error && <p className="text-stone-400 text-sm">אין תאריכים תפוסים רשומים</p>
+      ) : (
+        <div className="flex flex-wrap gap-2">
+          {dates.map(d => {
+            const isPast = d.booked_date < today
+            return (
+              <span
+                key={d.id}
+                className={`flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full border ${
+                  isPast ? 'bg-stone-100 text-stone-400 border-stone-200' : 'bg-red-50 text-red-600 border-red-200'
+                }`}
+              >
+                {formatBookedDate(d.booked_date)}
+                <button onClick={() => handleDelete(d.id)} className="hover:text-red-800" aria-label="מחיקת תאריך">
+                  <X size={12} />
+                </button>
+              </span>
+            )
+          })}
+        </div>
+      )}
     </div>
   )
 }

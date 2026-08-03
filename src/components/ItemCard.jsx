@@ -1,13 +1,16 @@
 import { trackWhatsApp, trackDressView } from '../lib/analytics'
+import { formatBookedDate, computeEffectiveAvailability } from '../constants'
 
 export default function ItemCard({ item, onClick }) {
   const firstImage = Array.isArray(item.images) ? item.images[0] : item.images
+  const bookedDates = item.bookedDates || []
+  const effectiveAvailability = computeEffectiveAvailability(item)
 
   const availabilityBadge = {
     'פנוי': <span className="badge-available">פנוי</span>,
     'שמור': <span className="badge-reserved">שמור</span>,
     'לא זמין': <span className="badge-unavailable">לא זמין</span>,
-  }[item.availability] || null
+  }[effectiveAvailability] || null
 
   const whatsappMsg = encodeURIComponent(`שלום, אני מתעניינת בפריט: ${item.name}`)
   const whatsappUrl = `https://wa.me/972506386895?text=${whatsappMsg}`
@@ -92,6 +95,14 @@ export default function ItemCard({ item, onClick }) {
           )}
           {item.size && <span>מידה: {item.size}</span>}
         </div>
+
+        {/* Booked dates */}
+        {bookedDates.length > 0 && (
+          <div className="text-xs text-red-500 bg-red-50 border border-red-100 rounded-lg px-2.5 py-1.5 mb-3">
+            תפוסה בתאריכים: {bookedDates.slice(0, 3).map(formatBookedDate).join(', ')}
+            {bookedDates.length > 3 && ` +${bookedDates.length - 3}`}
+          </div>
+        )}
 
         {/* Price */}
         {item.price && (

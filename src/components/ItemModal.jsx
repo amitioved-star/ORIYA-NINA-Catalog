@@ -3,6 +3,7 @@ import { X, ChevronRight, ChevronLeft } from 'lucide-react'
 import SEO from './SEO'
 import { itemProductSchema } from '../seoSchemas'
 import { trackWhatsApp, trackDressView } from '../lib/analytics'
+import { formatBookedDate, computeEffectiveAvailability } from '../constants'
 
 export default function ItemModal({ item, onClose }) {
   const images = Array.isArray(item.images)
@@ -10,6 +11,8 @@ export default function ItemModal({ item, onClose }) {
     : item.images
     ? [item.images]
     : []
+  const bookedDates = item.bookedDates || []
+  const effectiveAvailability = computeEffectiveAvailability(item)
 
   const [activeImg, setActiveImg] = useState(0)
 
@@ -38,7 +41,7 @@ export default function ItemModal({ item, onClose }) {
     'שמור': { cls: 'bg-amber-50 text-amber-700 border-amber-200', label: 'שמור' },
     'לא זמין': { cls: 'bg-red-50 text-red-600 border-red-200', label: 'לא זמין' },
   }
-  const avail = availabilityConfig[item.availability] || availabilityConfig['פנוי']
+  const avail = availabilityConfig[effectiveAvailability] || availabilityConfig['פנוי']
 
   return (
     <>
@@ -168,6 +171,20 @@ export default function ItemModal({ item, onClose }) {
               </div>
             </div>
 
+            {/* Booked dates */}
+            {bookedDates.length > 0 && (
+              <div className="mb-6 bg-red-50 border border-red-100 rounded-2xl p-4">
+                <h4 className="text-red-600 font-medium text-sm mb-2">תפוסה בתאריכים</h4>
+                <div className="flex flex-wrap gap-2">
+                  {bookedDates.map(date => (
+                    <span key={date} className="text-xs text-red-600 bg-white border border-red-200 px-2.5 py-1 rounded-full">
+                      {formatBookedDate(date)}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {/* Description */}
             {item.description && (
               <div className="mb-6">
@@ -178,7 +195,7 @@ export default function ItemModal({ item, onClose }) {
 
             {/* WhatsApp CTA */}
             <div className="mt-auto">
-              {item.availability === 'לא זמין' ? (
+              {effectiveAvailability === 'לא זמין' ? (
                 <div className="w-full bg-stone-100 text-stone-400 text-center py-3 rounded-full font-medium text-sm">
                   לא זמין כרגע
                 </div>
@@ -201,7 +218,7 @@ export default function ItemModal({ item, onClose }) {
                 </a>
               )}
               <p className="text-center text-xs text-stone-400 mt-2">
-                {item.availability === 'שמור' && 'פריט זה שמור — ניתן לבדוק זמינות'}
+                {effectiveAvailability === 'שמור' && 'פריט זה שמור — ניתן לבדוק זמינות'}
               </p>
             </div>
           </div>
