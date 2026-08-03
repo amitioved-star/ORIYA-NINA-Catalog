@@ -1,13 +1,14 @@
 import { useState, useEffect, useRef } from 'react'
 import {
   Plus, Edit2, Trash2, X, Check, Eye, EyeOff, LogOut,
-  Upload, Star, Sparkles, Package, ChevronDown
+  Upload, Star, Sparkles, Package, ChevronDown,
+  Calendar as CalendarIcon, ChevronLeft, ChevronRight
 } from 'lucide-react'
 import SEO from '../components/SEO'
 import {
   fetchItems, createItem, updateItem, deleteItem,
   uploadImage, deleteImage,
-  fetchBookedDatesForItem, addBookedDate, deleteBookedDate,
+  fetchBookedDatesForItem, addBookedDate, deleteBookedDate, fetchAllBookedDates,
   adminLogin, isAdminLoggedIn, adminLogout
 } from '../lib/supabase'
 import { formatBookedDate } from '../constants'
@@ -126,6 +127,7 @@ function Dashboard({ onLogout }) {
   const [filterCat, setFilterCat] = useState('all')
   const [toast, setToast] = useState(null)
   const [hoverPreview, setHoverPreview] = useState(null)
+  const [view, setView] = useState('items')
 
   const showToast = (msg, type = 'success') => {
     setToast({ msg, type })
@@ -220,99 +222,130 @@ function Dashboard({ onLogout }) {
       </div>
 
       <div className="max-w-6xl mx-auto px-4 py-8">
-        {/* Stats */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
-          {[
-            { label: 'סה"כ פריטים', value: items.length, icon: Package },
-            { label: 'שמלות לנשים', value: dressesWomen, icon: Sparkles },
-            { label: 'שמלות לנערות', value: dressesGirls, icon: Sparkles },
-            { label: 'מטפחות', value: scarves, icon: Star },
-            { label: 'פנויים', value: available, icon: Check },
-          ].map(s => (
-            <div key={s.label} className="bg-white rounded-2xl border border-cream-200 p-4 text-center">
-              <div className="w-9 h-9 bg-cream-100 rounded-xl flex items-center justify-center mx-auto mb-2">
-                <s.icon size={18} className="text-gold-500" />
-              </div>
-              <div className="text-2xl font-bold text-stone-800">{s.value}</div>
-              <div className="text-xs text-stone-400 mt-0.5">{s.label}</div>
-            </div>
-          ))}
-        </div>
-
-        {/* Actions bar */}
-        <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
-          <div className="flex gap-2 flex-wrap">
-            {[
-              { value: 'all', label: 'הכל' },
-              { value: 'שמלה להשכרה', label: 'שמלות לנשים' },
-              { value: 'שמלה להשכרה לנערות', label: 'שמלות לנערות' },
-              { value: 'מטפחת למכירה', label: 'מטפחות' },
-            ].map(cat => (
-              <button
-                key={cat.value}
-                onClick={() => setFilterCat(cat.value)}
-                className={`px-3 py-1.5 rounded-full text-sm border transition-all ${
-                  filterCat === cat.value
-                    ? 'bg-gold-500 text-white border-gold-500'
-                    : 'border-cream-300 text-stone-600 hover:border-gold-300'
-                }`}
-              >
-                {cat.label}
-              </button>
-            ))}
-          </div>
+        {/* View tabs */}
+        <div className="flex gap-2 mb-6">
           <button
-            onClick={() => { setEditItem(null); setShowForm(true) }}
-            className="btn-primary flex items-center gap-2 text-sm py-2.5"
+            onClick={() => setView('items')}
+            className={`px-4 py-2 rounded-full text-sm font-medium border transition-all ${
+              view === 'items'
+                ? 'bg-gold-500 text-white border-gold-500'
+                : 'border-cream-300 text-stone-600 hover:border-gold-300'
+            }`}
           >
-            <Plus size={16} />
-            הוספת פריט
+            פריטים
+          </button>
+          <button
+            onClick={() => setView('calendar')}
+            className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium border transition-all ${
+              view === 'calendar'
+                ? 'bg-gold-500 text-white border-gold-500'
+                : 'border-cream-300 text-stone-600 hover:border-gold-300'
+            }`}
+          >
+            <CalendarIcon size={14} />
+            יומן
           </button>
         </div>
 
-        {/* Items table */}
-        {loading ? (
-          <div className="flex justify-center py-20"><div className="spinner" /></div>
-        ) : filtered.length === 0 ? (
-          <div className="text-center py-16 bg-white rounded-2xl border border-cream-200">
-            <Package size={36} className="text-stone-200 mx-auto mb-3" />
-            <p className="text-stone-400">אין פריטים להצגה</p>
-            <button
-              onClick={() => { setEditItem(null); setShowForm(true) }}
-              className="btn-primary mt-4 text-sm py-2"
-            >
-              הוספת פריט ראשון
-            </button>
-          </div>
+        {view === 'calendar' ? (
+          <BookingCalendar />
         ) : (
-          <div className="bg-white rounded-2xl border border-cream-200 overflow-hidden">
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead className="bg-cream-50 border-b border-cream-200">
-                  <tr>
-                    <th className="text-right px-4 py-3 text-stone-500 font-medium">פריט</th>
-                    <th className="text-right px-4 py-3 text-stone-500 font-medium hidden sm:table-cell">קטגוריה</th>
-                    <th className="text-right px-4 py-3 text-stone-500 font-medium hidden md:table-cell">מחיר</th>
-                    <th className="text-right px-4 py-3 text-stone-500 font-medium">זמינות</th>
-                    <th className="text-right px-4 py-3 text-stone-500 font-medium hidden lg:table-cell">תגיות</th>
-                    <th className="text-right px-4 py-3 text-stone-500 font-medium">פעולות</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-cream-100">
-                  {filtered.map(item => (
-                    <AdminRow
-                      key={item.id}
-                      item={item}
-                      onEdit={() => { setEditItem(item); setShowForm(true) }}
-                      onDelete={() => setDeleteConfirm(item)}
-                      onQuickUpdate={handleQuickUpdate}
-                      onHoverImage={setHoverPreview}
-                    />
-                  ))}
-                </tbody>
-              </table>
+          <>
+            {/* Stats */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
+              {[
+                { label: 'סה"כ פריטים', value: items.length, icon: Package },
+                { label: 'שמלות לנשים', value: dressesWomen, icon: Sparkles },
+                { label: 'שמלות לנערות', value: dressesGirls, icon: Sparkles },
+                { label: 'מטפחות', value: scarves, icon: Star },
+                { label: 'פנויים', value: available, icon: Check },
+              ].map(s => (
+                <div key={s.label} className="bg-white rounded-2xl border border-cream-200 p-4 text-center">
+                  <div className="w-9 h-9 bg-cream-100 rounded-xl flex items-center justify-center mx-auto mb-2">
+                    <s.icon size={18} className="text-gold-500" />
+                  </div>
+                  <div className="text-2xl font-bold text-stone-800">{s.value}</div>
+                  <div className="text-xs text-stone-400 mt-0.5">{s.label}</div>
+                </div>
+              ))}
             </div>
-          </div>
+
+            {/* Actions bar */}
+            <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
+              <div className="flex gap-2 flex-wrap">
+                {[
+                  { value: 'all', label: 'הכל' },
+                  { value: 'שמלה להשכרה', label: 'שמלות לנשים' },
+                  { value: 'שמלה להשכרה לנערות', label: 'שמלות לנערות' },
+                  { value: 'מטפחת למכירה', label: 'מטפחות' },
+                ].map(cat => (
+                  <button
+                    key={cat.value}
+                    onClick={() => setFilterCat(cat.value)}
+                    className={`px-3 py-1.5 rounded-full text-sm border transition-all ${
+                      filterCat === cat.value
+                        ? 'bg-gold-500 text-white border-gold-500'
+                        : 'border-cream-300 text-stone-600 hover:border-gold-300'
+                    }`}
+                  >
+                    {cat.label}
+                  </button>
+                ))}
+              </div>
+              <button
+                onClick={() => { setEditItem(null); setShowForm(true) }}
+                className="btn-primary flex items-center gap-2 text-sm py-2.5"
+              >
+                <Plus size={16} />
+                הוספת פריט
+              </button>
+            </div>
+
+            {/* Items table */}
+            {loading ? (
+              <div className="flex justify-center py-20"><div className="spinner" /></div>
+            ) : filtered.length === 0 ? (
+              <div className="text-center py-16 bg-white rounded-2xl border border-cream-200">
+                <Package size={36} className="text-stone-200 mx-auto mb-3" />
+                <p className="text-stone-400">אין פריטים להצגה</p>
+                <button
+                  onClick={() => { setEditItem(null); setShowForm(true) }}
+                  className="btn-primary mt-4 text-sm py-2"
+                >
+                  הוספת פריט ראשון
+                </button>
+              </div>
+            ) : (
+              <div className="bg-white rounded-2xl border border-cream-200 overflow-hidden">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead className="bg-cream-50 border-b border-cream-200">
+                      <tr>
+                        <th className="text-right px-4 py-3 text-stone-500 font-medium">פריט</th>
+                        <th className="text-right px-4 py-3 text-stone-500 font-medium hidden sm:table-cell">קטגוריה</th>
+                        <th className="text-right px-4 py-3 text-stone-500 font-medium hidden md:table-cell">מחיר</th>
+                        <th className="text-right px-4 py-3 text-stone-500 font-medium">זמינות</th>
+                        <th className="text-right px-4 py-3 text-stone-500 font-medium hidden lg:table-cell">תגיות</th>
+                        <th className="text-right px-4 py-3 text-stone-500 font-medium">פעולות</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-cream-100">
+                      {filtered.map(item => (
+                        <AdminRow
+                          key={item.id}
+                          item={item}
+                          onEdit={() => { setEditItem(item); setShowForm(true) }}
+                          onDelete={() => setDeleteConfirm(item)}
+                          onQuickUpdate={handleQuickUpdate}
+                          onHoverImage={setHoverPreview}
+                        />
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
+          </>
         )}
       </div>
 
@@ -850,6 +883,116 @@ function BookedDatesSection({ itemId }) {
             )
           })}
         </div>
+      )}
+    </div>
+  )
+}
+
+// ─── Booking Calendar (all dresses, whole month) ───────────────────────────
+
+const WEEKDAY_LABELS = ['א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ש']
+
+function BookingCalendar() {
+  const [monthDate, setMonthDate] = useState(() => new Date())
+  const [bookings, setBookings] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
+
+  useEffect(() => {
+    fetchAllBookedDates()
+      .then(setBookings)
+      .catch(() => setError('שגיאה בטעינת היומן'))
+      .finally(() => setLoading(false))
+  }, [])
+
+  const year = monthDate.getFullYear()
+  const month = monthDate.getMonth()
+  const daysInMonth = new Date(year, month + 1, 0).getDate()
+  const startWeekday = new Date(year, month, 1).getDay()
+  const monthLabel = monthDate.toLocaleDateString('he-IL', { month: 'long', year: 'numeric' })
+  const today = new Date().toISOString().slice(0, 10)
+
+  const isoDate = (day) => `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`
+
+  const byDate = {}
+  for (const b of bookings) {
+    if (!byDate[b.booked_date]) byDate[b.booked_date] = []
+    byDate[b.booked_date].push(b.items?.name || 'פריט')
+  }
+
+  const cells = []
+  for (let i = 0; i < startWeekday; i++) cells.push(null)
+  for (let d = 1; d <= daysInMonth; d++) cells.push(d)
+
+  const changeMonth = (delta) => setMonthDate(new Date(year, month + delta, 1))
+
+  return (
+    <div className="bg-white rounded-2xl border border-cream-200 p-5">
+      <div className="flex items-center justify-between mb-5">
+        <button
+          onClick={() => changeMonth(-1)}
+          className="w-9 h-9 rounded-full bg-cream-100 flex items-center justify-center text-stone-500 hover:bg-cream-200 transition-colors"
+          aria-label="חודש קודם"
+        >
+          <ChevronRight size={16} />
+        </button>
+        <h3 className="text-lg font-semibold text-stone-800">{monthLabel}</h3>
+        <button
+          onClick={() => changeMonth(1)}
+          className="w-9 h-9 rounded-full bg-cream-100 flex items-center justify-center text-stone-500 hover:bg-cream-200 transition-colors"
+          aria-label="חודש הבא"
+        >
+          <ChevronLeft size={16} />
+        </button>
+      </div>
+
+      {loading ? (
+        <div className="flex justify-center py-10"><div className="spinner" /></div>
+      ) : error ? (
+        <p className="text-red-500 text-sm text-center py-6">{error}</p>
+      ) : (
+        <>
+          <div className="grid grid-cols-7 gap-2 mb-2 text-center text-xs text-stone-400 font-medium">
+            {WEEKDAY_LABELS.map(w => <div key={w}>{w}</div>)}
+          </div>
+          <div className="grid grid-cols-7 gap-2">
+            {cells.map((day, i) => {
+              if (day === null) return <div key={i} />
+              const date = isoDate(day)
+              const dayBookings = byDate[date] || []
+              const isToday = date === today
+              return (
+                <div
+                  key={i}
+                  className={`rounded-xl p-2 min-h-[76px] border text-xs ${
+                    dayBookings.length > 0 ? 'bg-red-50 border-red-200' : 'bg-cream-50 border-cream-200'
+                  } ${isToday ? 'ring-2 ring-gold-400' : ''}`}
+                >
+                  <div className={`font-semibold mb-1 ${dayBookings.length > 0 ? 'text-red-600' : 'text-stone-500'}`}>
+                    {day}
+                  </div>
+                  {dayBookings.slice(0, 2).map((name, idx) => (
+                    <div key={idx} className="text-red-600 truncate leading-tight">{name}</div>
+                  ))}
+                  {dayBookings.length > 2 && (
+                    <div className="text-red-500 leading-tight">{`+${dayBookings.length - 2}`}</div>
+                  )}
+                </div>
+              )
+            })}
+          </div>
+
+          <div className="flex items-center gap-4 mt-4 text-xs text-stone-400">
+            <span className="flex items-center gap-1.5">
+              <span className="w-3 h-3 rounded bg-red-50 border border-red-200 inline-block" />
+              תפוס
+            </span>
+            <span className="flex items-center gap-1.5">
+              <span className="w-3 h-3 rounded bg-cream-50 border border-cream-200 inline-block" />
+              פנוי
+            </span>
+          </div>
+        </>
       )}
     </div>
   )

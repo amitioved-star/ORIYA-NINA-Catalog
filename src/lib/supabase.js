@@ -167,6 +167,21 @@ export async function fetchBookedDatesForItem(itemId) {
   return data
 }
 
+// All bookings with the dress name attached — used for the admin calendar view.
+export async function fetchAllBookedDates() {
+  const { data, error } = await supabase
+    .from('booked_dates')
+    .select('*, items(name)')
+    .order('booked_date', { ascending: true })
+
+  if (error) {
+    console.log('❌ fetchAllBookedDates error:', error)
+    throw error
+  }
+
+  return data
+}
+
 export async function addBookedDate(itemId, date) {
   const { data, error } = await supabase
     .from('booked_dates')
