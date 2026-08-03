@@ -78,7 +78,7 @@ export default function ItemModal({ item, onClose }) {
                 <img
                   src={images[activeImg]}
                   alt={`${item.name} - השכרת שמלות בחריש`}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-contain"
                   decoding="async"
                 />
               ) : (
@@ -122,7 +122,7 @@ export default function ItemModal({ item, onClose }) {
                       i === activeImg ? 'active border-gold-400' : 'border-transparent'
                     }`}
                   >
-                    <img src={img} alt={`${item.name} תמונה ${i + 1}`} className="w-full h-full object-cover" loading="lazy" decoding="async" />
+                    <img src={img} alt={`${item.name} תמונה ${i + 1}`} className="w-full h-full object-contain" loading="lazy" decoding="async" />
                   </button>
                 ))}
               </div>

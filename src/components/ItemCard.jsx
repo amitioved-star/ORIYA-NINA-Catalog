@@ -2,7 +2,9 @@ import { trackWhatsApp, trackDressView } from '../lib/analytics'
 import { formatBookedDate, computeEffectiveAvailability } from '../constants'
 
 export default function ItemCard({ item, onClick }) {
-  const firstImage = Array.isArray(item.images) ? item.images[0] : item.images
+  const images = Array.isArray(item.images) ? item.images : item.images ? [item.images] : []
+  const firstImage = images[0]
+  const secondImage = images[1]
   const bookedDates = item.bookedDates || []
   const effectiveAvailability = computeEffectiveAvailability(item)
 
@@ -39,7 +41,7 @@ export default function ItemCard({ item, onClick }) {
           <img
             src={firstImage}
             alt={`${item.name} - ${item.category || 'השכרת שמלות ערב בחריש'}`}
-            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-105"
             loading="lazy"
             decoding="async"
           />
@@ -65,6 +67,19 @@ export default function ItemCard({ item, onClick }) {
             {item.category}
           </span>
         </div>
+
+        {/* Second photo preview */}
+        {secondImage && (
+          <div className="absolute bottom-3 left-3 w-11 h-14 rounded-lg overflow-hidden border-2 border-white shadow-md bg-cream-100">
+            <img
+              src={secondImage}
+              alt=""
+              className="w-full h-full object-contain"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+        )}
       </div>
 
       {/* Content */}
