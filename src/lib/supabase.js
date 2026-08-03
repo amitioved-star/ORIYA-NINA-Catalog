@@ -215,7 +215,9 @@ export async function adminLogin(password) {
   const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD
 
   if (password === ADMIN_PASSWORD) {
-    sessionStorage.setItem('admin_auth', 'true')
+    // localStorage (not sessionStorage) so the login survives closing and reopening
+    // the home-screen app on iOS, not just the current tab.
+    localStorage.setItem('admin_auth', 'true')
     return true
   }
 
@@ -223,9 +225,9 @@ export async function adminLogin(password) {
 }
 
 export function isAdminLoggedIn() {
-  return sessionStorage.getItem('admin_auth') === 'true'
+  return localStorage.getItem('admin_auth') === 'true'
 }
 
 export function adminLogout() {
-  sessionStorage.removeItem('admin_auth')
+  localStorage.removeItem('admin_auth')
 }
