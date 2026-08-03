@@ -1,0 +1,14 @@
+{
+  "name": "ניהול ORIYA NINA",
+  "short_name": "ניהול ORIYA",
+  "description": "לוח ניהול קטלוג ORIYA NINA",
+  "start_url": "/admin-app.html",
+  "display": "standalone",
+  "background_color": "#FDFAF5",
+  "theme_color": "#C9A55A",
+  "dir": "rtl",
+  "lang": "he-IL",
+  "icons": [
+    { "src": "/logo.png", "sizes": "500x500", "type": "image/png" }
+  ]
+}

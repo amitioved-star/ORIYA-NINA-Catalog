@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#C9A55A" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>ORIYA NINA - ניהול</title>
+
+    <link rel="apple-touch-icon" href="/logo.png" />
+    <link rel="icon" type="image/png" href="/logo.png" />
+    <link rel="manifest" href="/admin.webmanifest" />
+
+    <!-- This page exists only so "Add to Home Screen" gets its own start_url (/admin-app.html)
+         instead of the storefront's start_url ("/") from the main manifest. It immediately
+         redirects into the real admin route. -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="ניהול ORIYA" />
+
+    <script>
+      window.location.replace('/admin')
+    </script>
+  </head>
+  <body style="font-family: sans-serif; text-align: center; margin-top: 40px; color: #7a5b21;">
+    <p>טוען ניהול...</p>
+  </body>
+</html>

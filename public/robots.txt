@@ -2,5 +2,6 @@ User-agent: *
 Allow: /
 Disallow: /admin
 Disallow: /admin/
+Disallow: /admin-app.html
 
 Sitemap: https://oriya-nina-catalog.vercel.app/sitemap.xml
