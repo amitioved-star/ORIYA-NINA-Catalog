@@ -66,9 +66,6 @@ export default function HomePage({ onItemClick }) {
 
           <h1 className="text-3xl sm:text-5xl md:text-6xl font-display tracking-[0.3em] text-white whitespace-nowrap">
             ORIYA NINA
-            <span className="block mt-4 text-base sm:text-xl md:text-2xl font-sans tracking-normal text-gold-100">
-              השכרת שמלות ערב בחריש לנשים ולנערות
-            </span>
           </h1>
 
           <p className="text-gold-300 text-xs tracking-[0.6em] mt-4 uppercase">
