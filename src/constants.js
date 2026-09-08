@@ -1,7 +1,7 @@
 export const SITE = {
   name: 'ORIYA NINA',
   legalName: 'ORIYA NINA - השכרת שמלות ערב בחריש',
-  url: 'https://oriya-nina-catalog.vercel.app',
+  url: 'https://www.oriyanina.com',
   phone: '+972506386895',
   phoneDisplay: '050-638-6895',
   phoneTel: 'tel:+972506386895',
@@ -11,7 +11,7 @@ export const SITE = {
   country: 'IL',
   areaServed: ['חריש', 'חדרה', 'פרדס חנה', 'כרכור', 'קציר', 'אור עקיבא', 'בנימינה', 'זכרון יעקב', 'קיסריה'],
   geo: { latitude: 32.4669, longitude: 35.05 },
-  defaultImage: 'https://oriya-nina-catalog.vercel.app/og-image.png',
+  defaultImage: 'https://www.oriyanina.com/og-image.png',
   priceRange: '₪₪',
   description:
     'השכרת שמלות ערב לנשים ולנערות בחריש, חדרה, פרדס חנה והסביבה. שמלות צנועות ויוקרתיות לאירועים, חתונות ובת מצווה החל מ־250 ₪ כולל ניקוי יבש.',
