@@ -36,4 +36,10 @@
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
   </url>
+  <url>
+    <loc>https://www.oriyanina.com/accessibility</loc>
+    <lastmod>2026-10-28T00:00:00+02:00</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
 </urlset>

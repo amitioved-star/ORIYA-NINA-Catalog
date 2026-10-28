@@ -1,12 +1,13 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import ItemCard from '../components/ItemCard'
 import { fetchItems, fetchBookedDatesMap } from '../lib/supabase'
-import { Sparkles, Crown, Gem, MapPin, MessageCircle } from 'lucide-react'
+import { Sparkles, Crown, Gem, MapPin, MessageCircle, Pause, Play } from 'lucide-react'
 import SEO from '../components/SEO'
 import { buildWhatsappUrl } from '../constants'
 import { localBusinessSchema, websiteSchema, organizationSchema } from '../seoSchemas'
 import { trackWhatsApp, trackBookMeasurement } from '../lib/analytics'
+import { useReducedMotion } from '../lib/a11y'
 
 export default function HomePage({ onItemClick }) {
   const [featured, setFeatured] = useState([])
@@ -14,6 +15,11 @@ export default function HomePage({ onItemClick }) {
 
   const videos = ['/hero1.mp4', '/hero2.mp4', '/hero3.mp4', '/hero4.mp4']
   const [currentVideo, setCurrentVideo] = useState(0)
+  const reducedMotion = useReducedMotion()
+  const [userPaused, setUserPaused] = useState(null)
+  const videoRef = useRef(null)
+  // An explicit user choice wins; otherwise follow the OS / toolbar "reduce motion" setting.
+  const paused = userPaused ?? reducedMotion
 
   useEffect(() => {
     Promise.all([fetchItems(), fetchBookedDatesMap()])
@@ -27,6 +33,13 @@ export default function HomePage({ onItemClick }) {
       .catch(() => setFeatured([]))
       .finally(() => setLoading(false))
   }, [])
+
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video) return
+    if (paused) video.pause()
+    else video.play().catch(() => {})
+  }, [paused, currentVideo])
 
   const handleVideoEnd = () => {
     setCurrentVideo((prev) => (prev + 1) % videos.length)
@@ -46,11 +59,12 @@ export default function HomePage({ onItemClick }) {
         {/* 🎥 VIDEO משופר */}
         <video
           key={currentVideo}
-          autoPlay
+          ref={videoRef}
+          autoPlay={!paused}
           muted
           playsInline
           preload="metadata"
-          aria-label="סטודיו ORIYA NINA — סרטון רקע"
+          aria-hidden="true"
           onEnded={handleVideoEnd}
           className="absolute w-full h-full object-cover brightness-105 contrast-115 saturate-105 scale-105"
         >
@@ -58,17 +72,26 @@ export default function HomePage({ onItemClick }) {
         </video>
 
         {/* ✨ שכבות יוקרתיות (לא כהה מדי!) */}
-        <div className="absolute inset-0 bg-black/20" />
+        <div className="absolute inset-0 bg-black/35" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-black/10" />
+
+        <button
+          type="button"
+          onClick={() => setUserPaused(!paused)}
+          aria-label={paused ? 'הפעלת סרטון הרקע' : 'השהיית סרטון הרקע'}
+          className="absolute top-4 left-4 z-20 flex h-11 w-11 items-center justify-center rounded-full bg-black/60 text-white hover:bg-black/80"
+        >
+          {paused ? <Play size={20} aria-hidden="true" /> : <Pause size={20} aria-hidden="true" />}
+        </button>
 
         {/* HEADER */}
         <div className="absolute top-12 w-full text-center z-10">
 
-          <h1 className="text-3xl sm:text-5xl md:text-6xl font-display tracking-[0.3em] text-white whitespace-nowrap">
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-display tracking-[0.3em] text-white whitespace-nowrap hero-text-shadow">
             ORIYA NINA
           </h1>
 
-          <p className="text-gold-300 text-xs tracking-[0.6em] mt-4 uppercase">
+          <p className="text-gold-300 text-xs tracking-[0.6em] mt-4 uppercase hero-text-shadow">
             LUXURY EVENING DRESSES
           </p>
 
@@ -77,7 +100,7 @@ export default function HomePage({ onItemClick }) {
         {/* CONTENT */}
         <div className="relative z-10 h-full flex flex-col justify-end pb-32 items-center text-center px-6 text-white">
 
-          <p className="text-lg md:text-xl text-stone-200 max-w-xl mb-10">
+          <p className="text-lg md:text-xl text-white max-w-xl mb-10 hero-text-shadow">
             סטודיו להשכרת שמלות ערב בחריש – שמלות צנועות ויוקרתיות לנשים ולנערות בהתאמה אישית לכל אירוע
           </p>
 
@@ -85,7 +108,7 @@ export default function HomePage({ onItemClick }) {
 
             <Link
               to="/catalog"
-              className="bg-gold-500 hover:bg-gold-600 text-white px-8 py-3 rounded-full font-semibold transition"
+              className="bg-gold-500 hover:bg-gold-600 text-stone-900 px-8 py-3 rounded-full font-semibold transition"
             >
               לצפייה בקטלוג
             </Link>
@@ -95,7 +118,7 @@ export default function HomePage({ onItemClick }) {
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => { trackWhatsApp('home_hero'); trackBookMeasurement('home_hero') }}
-              className="border border-white px-8 py-3 rounded-full hover:bg-white hover:text-black transition"
+              className="border border-white bg-black/30 px-8 py-3 rounded-full hover:bg-white hover:text-black transition"
               aria-label="קביעת מדידה בוואטסאפ"
             >
               קביעת מדידה
@@ -110,13 +133,13 @@ export default function HomePage({ onItemClick }) {
       {/* פרטים חשובים */}
       <section className="py-24 px-6 text-center bg-[#FFF5F2]">
 
-        <h2 className="text-3xl md:text-4xl font-display text-gold-500 mb-14">
+        <h2 className="text-3xl md:text-4xl font-display text-gold-700 mb-14">
           פרטים חשובים
         </h2>
 
         <div className="max-w-4xl mx-auto bg-white rounded-[30px] shadow-2xl p-10">
 
-          <div className="flex justify-center gap-6 mb-8 text-gold-500">
+          <div className="flex justify-center gap-6 mb-8 text-gold-700" aria-hidden="true">
             <Crown size={32} />
             <Gem size={32} />
             <Sparkles size={32} />
@@ -133,20 +156,20 @@ export default function HomePage({ onItemClick }) {
           <div className="space-y-3 text-gray-800 text-base">
 
             <p>
-              <span className="text-gold-500 font-semibold">מחיר פתיחה:</span> 250 ₪ בלבד (כולל ניקוי יבש)
+              <span className="text-gold-700 font-semibold">מחיר פתיחה:</span> 250 ₪ בלבד (כולל ניקוי יבש)
             </p>
 
             <p>
               מתאים לכל אירוע | שבתות חתן | מידות XS–XXL
             </p>
 
-            <p className="text-gold-500 font-semibold">
+            <p className="text-gold-700 font-semibold">
               חדש! השכרת שמלות בת מצווה – 200 ₪ בלבד
             </p>
 
           </div>
 
-          <p className="text-sm text-gray-400 mt-6">
+          <p className="text-sm text-gray-600 mt-6">
             *המחיר אינו כולל תיקונים
           </p>
 
@@ -156,7 +179,7 @@ export default function HomePage({ onItemClick }) {
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => { trackWhatsApp('home_details_section'); trackBookMeasurement('home_details_section') }}
-              className="bg-gradient-to-r from-[#C9A55A] to-[#E8CFA0] text-white px-10 py-4 rounded-full text-lg"
+              className="bg-gradient-to-r from-[#C9A55A] to-[#E8CFA0] text-stone-900 font-semibold px-10 py-4 rounded-full text-lg"
               aria-label="קביעת מדידה אישית בוואטסאפ"
             >
               קביעת מדידה אישית
@@ -171,17 +194,17 @@ export default function HomePage({ onItemClick }) {
       <section className="py-20 px-6 bg-white">
         <div className="max-w-6xl mx-auto grid gap-8 md:grid-cols-3">
           <div className="rounded-3xl border border-cream-200 bg-cream-50 p-7 shadow-sm">
-            <MapPin className="text-gold-500 mb-4" size={28} />
+            <MapPin className="text-gold-700 mb-4" size={28} aria-hidden="true" />
             <h2 className="text-xl font-semibold text-stone-800 mb-3">השכרת שמלות ערב בחריש</h2>
             <p className="leading-7 text-stone-600">מבחר שמלות ערב צנועות ויוקרתיות לנשים ולנערות באזור חריש, חדרה, פרדס חנה וקציר.</p>
           </div>
           <div className="rounded-3xl border border-cream-200 bg-cream-50 p-7 shadow-sm">
-            <Sparkles className="text-gold-500 mb-4" size={28} />
+            <Sparkles className="text-gold-700 mb-4" size={28} aria-hidden="true" />
             <h2 className="text-xl font-semibold text-stone-800 mb-3">מחירים ברורים ונוחים</h2>
             <p className="leading-7 text-stone-600">שמלות לנשים החל מ־250 ₪ כולל ניקוי יבש, ושמלות לנערות ובת מצווה ב־200 ₪ בהתאם למלאי.</p>
           </div>
           <div className="rounded-3xl border border-cream-200 bg-cream-50 p-7 shadow-sm">
-            <MessageCircle className="text-gold-500 mb-4" size={28} />
+            <MessageCircle className="text-gold-700 mb-4" size={28} aria-hidden="true" />
             <h2 className="text-xl font-semibold text-stone-800 mb-3">קביעת מדידה מהירה</h2>
             <p className="leading-7 text-stone-600">ראית שמלה שאהבת? לחיצה אחת על וואטסאפ ומקבלים פרטים על זמינות וקביעת מדידה.</p>
           </div>
@@ -192,14 +215,14 @@ export default function HomePage({ onItemClick }) {
       <section className="py-24 px-6 max-w-7xl mx-auto">
 
         <div className="text-center mb-14">
-          <p className="text-gold-500 mb-2 tracking-widest">BEST PICKS</p>
+          <p className="text-gold-700 mb-2 tracking-widest">BEST PICKS</p>
           <h2 className="text-4xl font-display">שמלות נבחרות</h2>
         </div>
 
         {loading ? (
-          <div className="text-center py-16">טוען...</div>
+          <div className="text-center py-16" role="status">טוען...</div>
         ) : featured.length === 0 ? (
-          <div className="text-center text-stone-400 py-16">אין פריטים עדיין</div>
+          <div className="text-center text-stone-600 py-16">אין פריטים עדיין</div>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {featured.map(item => (
@@ -211,7 +234,7 @@ export default function HomePage({ onItemClick }) {
         <div className="text-center mt-12">
           <Link
             to="/catalog"
-            className="border border-gold-500 text-gold-500 px-8 py-3 rounded-full hover:bg-gold-500 hover:text-white transition"
+            className="border border-gold-700 text-gold-700 px-8 py-3 rounded-full hover:bg-gold-700 hover:text-white transition"
           >
             לכל הקטלוג
           </Link>

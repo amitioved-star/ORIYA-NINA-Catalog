@@ -27,6 +27,13 @@ export const SITE = {
   ],
 }
 
+// Fill in coordinatorName / coordinatorEmail to show them on the accessibility statement page.
+export const ACCESSIBILITY = {
+  updated: '28.10.2026',
+  coordinatorName: '',
+  coordinatorEmail: '',
+}
+
 export function buildWhatsappUrl(message = 'שלום, אני מעוניינת לקבוע מדידה לשמלה') {
   return `https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(message)}`
 }

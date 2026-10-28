@@ -10,7 +10,7 @@ export default function Footer() {
           {/* Brand */}
           <div>
             <h3 className="text-gold-300 font-display text-xl mb-3">ORIYA NINA</h3>
-            <p className="text-sm leading-relaxed text-stone-400">
+            <p className="text-sm leading-relaxed text-stone-300">
               השכרת שמלות ערב לנשים ולנערות בחריש והסביבה.<br />
               אלגנטיות, צניעות ויוקרה לכל אירוע.
             </p>
@@ -26,6 +26,7 @@ export default function Footer() {
               <li><Link to="/women-evening-dresses-harish" className="hover:text-gold-300 transition-colors">שמלות ערב לנשים</Link></li>
               <li><Link to="/girls-dresses-harish" className="hover:text-gold-300 transition-colors">שמלות לנערות</Link></li>
               <li><Link to="/faq" className="hover:text-gold-300 transition-colors">שאלות ותשובות</Link></li>
+              <li><Link to="/accessibility" className="hover:text-gold-300 transition-colors">הצהרת נגישות</Link></li>
               <li>
                 <Link
                   to="/catalog?category=שמלה להשכרה"
@@ -62,7 +63,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => trackWhatsApp('footer')}
-                className="inline-flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-full text-sm hover:bg-green-700 transition-colors"
+                className="inline-flex items-center gap-2 bg-green-700 text-white px-4 py-2 rounded-full text-sm hover:bg-green-800 transition-colors"
                 aria-label="יצירת קשר בוואטסאפ"
               >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -82,14 +83,14 @@ export default function Footer() {
                 {SITE.phoneDisplay}
               </a>
             </div>
-            <p className="text-stone-400 text-xs mt-3">שעות פעילות: א׳–ה׳ 9:00–19:00</p>
-            <p className="text-stone-400 text-xs mt-2">אזור שירות: חריש, חדרה, פרדס חנה, קציר והסביבה</p>
+            <p className="text-stone-300 text-xs mt-3">שעות פעילות: א׳–ה׳ 9:00–19:00</p>
+            <p className="text-stone-300 text-xs mt-2">אזור שירות: חריש, חדרה, פרדס חנה, קציר והסביבה</p>
           </div>
         </div>
 
-        <div className="border-t border-stone-700 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-stone-500">
+        <div className="border-t border-stone-700 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-stone-400">
           <span>© {new Date().getFullYear()} ORIYA NINA. כל הזכויות שמורות.</span>
-          <Link to="/admin" className="hover:text-stone-400 transition-colors">ניהול</Link>
+          <Link to="/admin" className="hover:text-stone-200 transition-colors">ניהול</Link>
         </div>
       </div>
     </footer>

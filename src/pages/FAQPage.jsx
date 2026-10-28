@@ -20,7 +20,7 @@ export default function FAQPage() {
         jsonLd={[faqSchema(FAQS), breadcrumbSchema([{ name: 'בית', path: '/' }, { name: 'שאלות ותשובות', path: '/faq' }])]}
       />
       <div className="text-center mb-10">
-        <p className="text-gold-500 text-sm font-medium tracking-wider mb-2">FAQ</p>
+        <p className="text-gold-700 text-sm font-medium tracking-wider mb-2">FAQ</p>
         <h1 className="section-title">שאלות ותשובות</h1>
         <div className="gold-divider" />
       </div>

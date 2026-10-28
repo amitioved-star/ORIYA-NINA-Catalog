@@ -22,15 +22,15 @@
 
 @layer components {
   .btn-primary {
-    @apply bg-gold-500 text-white px-6 py-3 rounded-full font-medium transition-all duration-300 hover:bg-gold-600 hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0;
+    @apply bg-gold-500 text-stone-900 px-6 py-3 rounded-full font-medium transition-all duration-300 hover:bg-gold-600 hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0;
   }
   
   .btn-outline {
-    @apply border border-gold-400 text-gold-600 px-6 py-3 rounded-full font-medium transition-all duration-300 hover:bg-gold-400 hover:text-white hover:shadow-md;
+    @apply border border-gold-600 text-gold-700 px-6 py-3 rounded-full font-medium transition-all duration-300 hover:bg-gold-700 hover:text-white hover:shadow-md;
   }
 
   .btn-whatsapp {
-    @apply bg-green-500 text-white px-5 py-2.5 rounded-full font-medium transition-all duration-300 hover:bg-green-600 hover:shadow-md flex items-center gap-2 justify-center;
+    @apply bg-green-700 text-white px-5 py-2.5 rounded-full font-medium transition-all duration-300 hover:bg-green-800 hover:shadow-md flex items-center gap-2 justify-center;
   }
 
   .card {
@@ -46,19 +46,19 @@
   }
 
   .badge-unavailable {
-    @apply bg-red-50 text-red-600 border border-red-200 text-xs px-2.5 py-1 rounded-full font-medium;
+    @apply bg-red-50 text-red-700 border border-red-200 text-xs px-2.5 py-1 rounded-full font-medium;
   }
 
   .badge-new {
-    @apply bg-gold-500 text-white text-xs px-2.5 py-1 rounded-full font-medium;
+    @apply bg-gold-500 text-stone-900 text-xs px-2.5 py-1 rounded-full font-medium;
   }
 
   .badge-popular {
-    @apply bg-rose-400 text-white text-xs px-2.5 py-1 rounded-full font-medium;
+    @apply bg-rose-700 text-white text-xs px-2.5 py-1 rounded-full font-medium;
   }
 
   .input-field {
-    @apply w-full border border-cream-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-gold-400 focus:border-transparent bg-white text-right transition-all;
+    @apply w-full border border-cream-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-stone-800 bg-white text-right transition-all;
     font-family: 'Assistant', sans-serif;
   }
 
@@ -157,3 +157,73 @@ textarea, input, select {
   border-color: #B8923A;
   background-color: #FAF5EB;
 }
+
+/* ---------- Accessibility (ת"י 5568 / WCAG 2.1 AA) ---------- */
+
+:focus-visible {
+  outline: 3px solid #1a1a1a;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px #fff;
+}
+
+#main-content:focus { outline: none; box-shadow: none; }
+
+.skip-link {
+  position: fixed;
+  top: 8px;
+  right: 8px;
+  z-index: 100;
+  padding: 12px 20px;
+  border-radius: 9999px;
+  background: #1a1a1a;
+  color: #fff;
+  font-weight: 600;
+  transform: translateY(-200%);
+  transition: transform 0.15s;
+}
+.skip-link:focus { transform: translateY(0); }
+
+.hero-text-shadow { text-shadow: 0 1px 8px rgba(0, 0, 0, 0.55); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Accessibility toolbar modes (classes toggled on <html>) */
+html.a11y-font-1 { font-size: 112.5%; }
+html.a11y-font-2 { font-size: 125%; }
+html.a11y-font-3 { font-size: 150%; }
+
+html.a11y-no-motion *, html.a11y-no-motion *::before, html.a11y-no-motion *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+html.a11y-readable, html.a11y-readable * {
+  font-family: Arial, Helvetica, sans-serif !important;
+  letter-spacing: 0.02em !important;
+  word-spacing: 0.08em !important;
+  line-height: 1.7 !important;
+}
+
+html.a11y-links a { text-decoration: underline !important; font-weight: 700 !important; }
+
+html.a11y-gray { filter: grayscale(1); }
+
+html.a11y-contrast *:not(img):not(video):not(svg):not(path) {
+  background-color: #000 !important;
+  background-image: none !important;
+  color: #fff !important;
+  border-color: #fff !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+}
+html.a11y-contrast a, html.a11y-contrast a * { color: #ffd600 !important; }
+html.a11y-contrast :focus-visible { outline: 3px solid #ffd600 !important; box-shadow: none !important; }

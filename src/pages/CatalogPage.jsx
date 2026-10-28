@@ -125,10 +125,10 @@ export default function CatalogPage({ onItemClick }) {
       />
       {/* Page Header */}
       <div className="text-center mb-8">
-        <p className="text-gold-500 text-sm font-medium tracking-wider mb-2">כל הפריטים</p>
+        <p className="text-gold-700 text-sm font-medium tracking-wider mb-2">כל הפריטים</p>
         <h1 className="section-title">קטלוג</h1>
         <div className="gold-divider" />
-        <p className="text-stone-400 text-sm mt-3">
+        <p className="text-stone-600 text-sm mt-3" role="status" aria-live="polite">
           {loading ? 'טוען...' : `${items.length} פריטים`}
         </p>
       </div>
@@ -137,7 +137,7 @@ export default function CatalogPage({ onItemClick }) {
       <div className="bg-white rounded-2xl border border-cream-200 p-4 mb-6 shadow-sm">
         {/* Search */}
         <div className="relative mb-4">
-          <Search size={16} className="absolute right-4 top-1/2 -translate-y-1/2 text-stone-300" />
+          <Search size={16} aria-hidden="true" className="absolute right-4 top-1/2 -translate-y-1/2 text-stone-500" />
           <input
             type="text"
             value={search}
@@ -149,24 +149,25 @@ export default function CatalogPage({ onItemClick }) {
           {search && (
             <button
               onClick={clearSearch}
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-300 hover:text-stone-500"
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-stone-500 hover:text-stone-800"
               aria-label="ניקוי חיפוש"
             >
-              <X size={16} />
+              <X size={16} aria-hidden="true" />
             </button>
           )}
         </div>
 
         {/* Category filters */}
-        <div className="flex flex-wrap gap-2 mb-3">
+        <div className="flex flex-wrap gap-2 mb-3" role="group" aria-label="סינון לפי קטגוריה">
           {CATEGORIES.map(cat => (
             <button
               key={cat.value}
               onClick={() => handleCategory(cat.value)}
+              aria-pressed={category === cat.value}
               className={`px-4 py-1.5 rounded-full text-sm font-medium border transition-all duration-200 ${
                 category === cat.value
-                  ? 'bg-gold-500 text-white border-gold-500'
-                  : 'border-cream-300 text-stone-600 hover:border-gold-400 hover:text-gold-600'
+                  ? 'bg-gold-500 text-stone-900 border-gold-600'
+                  : 'border-stone-400 text-stone-700 hover:border-gold-700 hover:text-gold-700'
               }`}
             >
               {cat.label}
@@ -176,36 +177,44 @@ export default function CatalogPage({ onItemClick }) {
 
         {/* Available only toggle */}
         <label className="flex items-center gap-2 cursor-pointer w-fit">
-          <div
-            onClick={() => setAvailableOnly(v => !v)}
-            className={`relative w-10 h-5 rounded-full transition-colors duration-200 ${
-              availableOnly ? 'bg-gold-500' : 'bg-stone-200'
-            }`}
+          <input
+            type="checkbox"
+            role="switch"
+            checked={availableOnly}
+            onChange={e => setAvailableOnly(e.target.checked)}
+            className="peer sr-only"
+          />
+          <span
+            aria-hidden="true"
+            className="relative inline-block w-10 h-5 rounded-full bg-stone-500 transition-colors duration-200 peer-checked:bg-gold-700 peer-focus-visible:outline peer-focus-visible:outline-[3px] peer-focus-visible:outline-offset-2 peer-focus-visible:outline-stone-900"
           >
-            <div
-              className={`absolute top-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform duration-200 ${
-                availableOnly ? 'translate-x-0.5' : 'right-0.5 translate-x-0'
+            <span
+              className={`absolute top-0.5 w-4 h-4 bg-white rounded-full shadow transition-all duration-200 ${
+                availableOnly ? 'left-0.5' : 'right-0.5'
               }`}
-              style={{ [availableOnly ? 'right' : 'left']: '2px' }}
             />
-          </div>
-          <span className="text-sm text-stone-600">פנויים בלבד</span>
+          </span>
+          <span className="text-sm text-stone-700">פנויים בלבד</span>
         </label>
       </div>
 
       {/* Results */}
       {loading ? (
-        <div className="flex justify-center py-24">
-          <div className="spinner" />
+        <div className="flex justify-center py-24" role="status">
+          <div className="spinner" aria-hidden="true" />
+          <span className="sr-only">טוען שמלות</span>
         </div>
       ) : items.length === 0 ? (
         <EmptyResults onClear={() => { setSearch(''); setCategory('all'); setAvailableOnly(false) }} />
       ) : (
+        <>
+        <h2 className="sr-only">רשימת השמלות</h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
           {items.map(item => (
             <ItemCard key={item.id} item={item} onClick={onItemClick} />
           ))}
         </div>
+        </>
       )}
     </div>
   )
@@ -215,10 +224,10 @@ function EmptyResults({ onClear }) {
   return (
     <div className="text-center py-20">
       <div className="w-16 h-16 bg-cream-100 rounded-full flex items-center justify-center mx-auto mb-4">
-        <Search size={24} className="text-stone-300" />
+        <Search size={24} aria-hidden="true" className="text-stone-500" />
       </div>
-      <h3 className="text-stone-500 text-lg font-medium mb-2">לא נמצאו פריטים</h3>
-      <p className="text-stone-400 text-sm mb-4">נסי לשנות את הסינון או החיפוש</p>
+      <h2 className="text-stone-700 text-lg font-medium mb-2">לא נמצאו פריטים</h2>
+      <p className="text-stone-600 text-sm mb-4">נסי לשנות את הסינון או החיפוש</p>
       <button onClick={onClear} className="btn-outline text-sm py-2">
         ניקוי סינון
       </button>

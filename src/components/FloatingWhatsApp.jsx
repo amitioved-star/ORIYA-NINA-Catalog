@@ -13,7 +13,7 @@ export default function FloatingWhatsApp() {
       target="_blank"
       rel="noopener noreferrer"
       onClick={handleClick}
-      className="fixed bottom-5 left-5 z-50 flex items-center gap-2 rounded-full bg-green-500 px-4 py-3 text-sm font-semibold text-white shadow-xl transition hover:bg-green-600 hover:-translate-y-0.5"
+      className="fixed bottom-5 left-5 z-50 flex items-center gap-2 rounded-full bg-green-700 px-4 py-3 text-sm font-semibold text-white shadow-xl transition hover:bg-green-800 hover:-translate-y-0.5"
       aria-label="יצירת קשר בוואטסאפ — קביעת מדידה"
       data-track-source="floating"
     >
